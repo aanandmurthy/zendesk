@@ -1,0 +1,165 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+          <link href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+          <link href="main.css" rel="stylesheet">
+          <style>
+            .wrap {
+    position:absolute;
+    /*
+    top:50%;
+    left:50%;
+    */
+    width:200px;
+    height:500px;
+    margin:-200px 0 0 -400px;
+    margin:30px;
+}
+
+h1 {
+    font-size:40px;
+    font-family:'PT Sans Narrow', sans-serif;
+    text-align:center;
+    margin:0;
+    /*
+    margin-bottom:120px;
+    */
+    text-shadow:5px 5px 0 #ddd;
+}
+
+.bar {
+    float:left;
+    clear:both;
+    width:100%;
+    height:40px;
+    position:relative;
+    margin-top:55px;
+}
+
+.bar .percent {
+    background:#2caedd;
+    background:-moz-linear-gradient(left, #2caedd 0%, #86dd2a 28%, #e0d72a 46%, #e8902c 66%, #ed2d2d 86%, #ff0000 100%);
+    background:-webkit-gradient(linear, left top, right top, color-stop(0%,#2caedd), color-stop(28%,#86dd2a), color-stop(46%,#e0d72a), color-stop(66%,#e8902c), color-stop(86%,#ed2d2d), color-stop(100%,#ff0000));
+    background:-webkit-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+    background:-o-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+    background:-ms-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+    background:linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2caedd', endColorstr='#ff0000', GradientType=1);
+    float:left;
+    width:100%;
+    height:40px;
+    position:relative;
+}
+
+.bar .percent span {
+    display:block;
+    position:absolute;
+    top:0;
+    right:0;
+    z-index:2;
+    width:100%;
+    height:40px;
+    background:rgba(255, 255, 255, .7);
+}
+
+.bar .circle {
+    display:block;
+    position:absolute;
+    top:50%;
+    left:0;
+    z-index:3;
+    margin:-40px 0 0 -40px;
+    width:80px;
+    height:80px;
+    line-height:80px;
+    text-align:center;
+    font-size:20px;
+    font-family:'PT Sans Narrow', sans-serif;
+    color:#fff;
+    background:rgba(0, 0, 0, .1);
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    border-radius:40px;
+    -webkit-transition:all 1s ease;
+    -moz-transition:all 1s ease;
+    -o-transition:all 1s ease;
+}
+
+.bar .circle.rotate {
+    -webkit-transform:rotate(1080deg);
+    -moz-transform:rotate(1080deg);
+    -o-transform:rotate(1080deg);
+}
+
+.bar .circle span {
+    display:inline-block;
+    width:70px;
+    height:70px;
+    line-height:70px;
+    background:rgba(0, 0, 0, .3);
+    -moz-border-radius:35px;
+    -webkit-border-radius:35px;
+    border-radius:35px;
+}
+
+.text {
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:170px;
+    margin-left:-85px;
+}
+
+.text .input {
+    width:140px;
+    padding:15px;
+    border:1px solid #ddd;
+    text-align:center;
+    font-size:20px;
+    font-family:'PT Sans Narrow', sans-serif;
+}
+
+.text small {
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    font-size:11px;
+}
+
+a {
+    color:#eee;
+}
+
+
+p a {
+    color:black;
+}
+
+          </style>
+    </head>
+    <body>
+            <a href="iframe.html" class="previous">&laquo; Previous</a>
+        <div class="card">
+           
+            <div class="card-body">
+              <h5 class="card-title"> <i class="fa fa-brain"></i> Think   </h5>
+              <ul style="list-style-type:circle;">
+              <li><span class="card-text">With supporting text below as a natural lead-in to additional content.</span></li>
+              <li><span class="card-text">With supporting text below as a natural lead-in to additional content.</span></li>
+              </ul>
+         
+            </div>
+          </div>
+     
+       
+            
+        </div> <div class="row">
+       
+    </body>
+    <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</html>

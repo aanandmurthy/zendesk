@@ -1,0 +1,26 @@
+footer{
+ font-size: 10px;
+ padding-top: 20px;
+}
+.data {
+  color: #363;
+  padding-left: 6px;
+}
+#content td {
+	font-size: 12px;
+	padding-top: 2px;
+}
+#button2,#button3{
+  padding-top: 20px;
+}
+.row{
+  margin-left: 0!important ;
+}
+.userSize{
+  font-size: 38px;
+  margin-top: 40px;
+}
+#marginOwn{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

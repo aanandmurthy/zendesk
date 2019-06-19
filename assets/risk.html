@@ -1,0 +1,104 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="main.css" rel="stylesheet">
+
+<style>
+
+a{
+  color: #0081BB;
+  font-family: tahoma;
+}
+/*
+** timeline css codes
+*/
+.comments{
+  width: 200px;
+  margin: 100px auto;
+  padding: 0px 5px 0px 50px;
+  border-left: 2px solid #34495e;
+}
+p{
+  padding: 10px;
+  background: #34495e;
+  color: #ecf0f1;
+  font-family: tahoma;
+  line-height: 1.7;
+  position: relative;
+}
+p > span {
+    display: block;
+    padding: 5px 5px 10px 5px;
+    color: #7f8c8d;
+    font-style: italic;
+    font-size: 13px;
+}
+
+p > button{
+  background: #0081BB;
+  color: #fff;
+  width: 100px;
+  padding: 10px;
+  border-radius: 2px;
+  border: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+p:before{
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0081BB;
+  top: -9px;
+  left: -61px;
+  position: absolute;
+}
+p:after{
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: #34495e #34495e transparent       transparent ;
+  border-width: 15px;
+  position: absolute;
+  top: 0px;
+  left: -29px;
+}
+</style>
+
+</head>
+
+<body>
+        <a href="iframe.html" class="previous">&laquo; Previous</a>
+        <div class="comments">
+                <p>
+                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
+                  <span>in 08.09.2016</span>
+                  <button>repley</button>
+                </p>
+                <p>
+                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
+                  <span>in 08.09.2016</span>
+                  <button>repley</button>
+                </p>
+                <p>
+                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
+                  <span>in 08.09.2016</span>
+                  <button>repley</button>
+                </p>
+              
+              </div>
+              
+    
+
+
+
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>

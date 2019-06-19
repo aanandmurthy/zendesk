@@ -1,0 +1,116 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <link href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+  <link href="main.css" rel="stylesheet">
+  <script src="segbar.js"></script>
+
+</head>
+<body>
+  
+      <div class="container"> 
+        <div class="row justify-content-start">
+          
+            <div class="col align-self-center">
+                <p>
+              
+                    <i class="fas fa-user-circle userSize" data-toggle="collapse" data-target="#Userdetails" aria-expanded="false" aria-controls="collapseExample"></i>
+                    
+              </p>
+              
+              </div>
+            
+            </div>
+            <div class="row">
+                <span><a href="analytic.html"><i class="fa fa-sun"></i>Denkstil</a> </span>
+                <div class="chart1"></div>
+            </div>
+            <div class="col-12" ></div>
+            <div class="row " id="marginOwn" >
+           
+                <span> <a href="mood.html"><i class="fa fa-brain"></i>Regulatorischer Focus</a></span>
+                <div class="chart2"></div>
+            </div>
+            <div class="row">
+                <span> <i class="fa fa-sun"></i>Stimmung</span>
+                <div class="chart3"></div>
+            </div>
+          </div>
+          <div class="col-12" ></div>
+          
+     </div>  
+ 
+  <div id="content"></div>
+
+  <div class="row">
+    <button type="button" class="btn btn-warning" onclick="location.href='augmented.html'">Suggestion for Reply</button>
+  </div>
+  <script>
+    $('.chart1').segbar([
+  {
+    data: [
+      { title: 'Analytizch', value: 16744 },
+      {  title: 'spontaneous', value: 6500 },
+
+    ]
+  },
+  
+])
+$('.chart2').segbar([
+  {
+    data: [
+      { title: 'gewinn orientiert', value: 10.87, color: '#8E44AD' },
+      { title: 'verlustorientiert', value: 14.56, color: '#81CFE0' },
+    ]
+  },
+])
+$('.chart3').segbar([
+  {
+    data: [
+      { title: 'gut gelaunt', value: 6.87, color: '#8E44AD' },
+      { title: 'Schlecht gelaunt ', value: 14.56, color: '#81CFE0' },
+    ]
+  },
+])
+  </script>
+
+  <script id="requester-template" type="text/x-handlebars-template">
+    <table>
+    <tr>
+      <td>Customer:</td>
+      <td class="data">{{name}}</td>
+    </tr>
+   {{#if tags}}
+    <tr>
+      <td>Tags:</td>
+      <td class="data">{{#each tags}}{{this}} {{/each}}</td>
+    </tr>
+    {{/if}}
+    <tr>
+      <td>Added:</td>
+      <td class="data">{{created_at}}</td>
+    </tr>
+    <tr>
+        <tr>
+            <td>description:</td>
+            <td class="data">{{description}}</td>
+          </tr>
+          <tr>
+      <td>Last signed in:</td>
+      <td class="data">{{last_login_at}}</td>
+    </tr>
+    </table>
+  </script>
+ 
+  <script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>
