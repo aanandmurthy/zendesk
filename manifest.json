@@ -1,5 +1,5 @@
 {
-  "name": "x-ray",
+  "name": "Anaylysis",
   "author": {
     "name": "ashwii",
     "email": "ashwini.@gmail.com",
@@ -10,6 +10,9 @@
   "location": {
     "support": {
       "ticket_sidebar": "assets/iframe.html"
+    },
+    "chat": {
+      "chat_sidebar": "assets/page1.html"
     }
   },
   "version": "1.0",

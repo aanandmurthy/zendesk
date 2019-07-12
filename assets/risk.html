@@ -1,97 +1,369 @@
-<html>
+<!-- <html>
 <head>
   <meta charset="utf-8">
-  <link href="https://cdn.jsdelivr.net/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="main.css" rel="stylesheet"/>
 
 <style>
-
-a{
-  color: #0081BB;
-  font-family: tahoma;
-}
-/*
-** timeline css codes
-*/
-.comments{
-  width: 200px;
-  margin: 100px auto;
-  padding: 0px 5px 0px 50px;
-  border-left: 2px solid #34495e;
-}
-p{
-  padding: 10px;
-  background: #34495e;
-  color: #ecf0f1;
-  font-family: tahoma;
-  line-height: 1.7;
-  position: relative;
-}
-p > span {
-    display: block;
-    padding: 5px 5px 10px 5px;
-    color: #7f8c8d;
-    font-style: italic;
-    font-size: 13px;
-}
-
-p > button{
-  background: #0081BB;
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
+body {
+  font-size: 15px;
+  font-family: 'Source Sans Pro', sans-serif;
   color: #fff;
-  width: 100px;
-  padding: 10px;
-  border-radius: 2px;
-  border: 0;
-  font-weight: bold;
-  cursor: pointer;
+  background-color: #111;
+  //overflow: hidden;
 }
-p:before{
-  content: "";
-  display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #0081BB;
-  top: -9px;
-  left: -61px;
-  position: absolute;
+
+
+.pie-container {
+  transition: padding .7s ease;
+  padding: 10px 13%;
 }
-p:after{
-  content: "";
-  display: block;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-color: #34495e #34495e transparent       transparent ;
-  border-width: 15px;
-  position: absolute;
-  top: 0px;
-  left: -29px;
+
+#pieChart {
+  //border: green 1px solid;
+  //border-radius: 50%;
+  max-width: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+
+  svg {
+    overflow: visible;
+    transition: width .7s ease;
+  }
+
+  path {
+    cursor: pointer;
+  }
+  
+  // inner-radius value sent to javascript
+  counter-reset: break-point 80; 
+}
+
+#pieText {
+  //border: 1px dotted;
+  overflow: visible;      // to see shadow
+  //white-space: nowrap;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  //align-items: center;
+
+  .panel {
+    background-color: #111;
+    border: groove 4px #222;
+    box-shadow: 8px 10px 20px #000,
+      4px 5px 25px #000;
+    width: 100%;
+    height: 60%;
+    border-radius: 7px;
+    padding: 0 3px;
+    float: left;
+    transition: height .7s ease, padding .7s ease;
+
+    perspective: 650px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.content-wrapper {
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+
+
+// Responsive Text Mixin
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+// Responsive text mixin
+@mixin responsiveText ($minSize, $maxSize: 28px, $minWidth: 450px, $maxWidth: 900px) {
+
+
+  $mxS: strip-unit($maxSize);
+  $mnS: strip-unit($minSize);
+  $mxW: strip-unit($maxWidth);
+  $mnW: strip-unit($minWidth);
+
+  font-size: calc( #{$minSize} + (#{$mxS} - #{$mnS}) * (100vw - #{$minWidth}) / (#{$mxW} - #{$mnW}));
+
+@media screen and (max-width: $minWidth ) {
+  font-size: $minSize;
+}
+
+@media screen and (min-width: $maxWidth ) {
+  font-size: $maxSize;
+}
+
+}
+
+#segmentTitle, #segmentText {
+  text-shadow: 1px 1px 3px #000, 1px 1px 3px #000;
+  text-align: center;
+}
+
+#segmentTitle {
+  //width: 100%;
+  transition: padding .7s ease;
+  padding: 20px;
+  @include responsiveText(19px, 35px, 200px, 1314px);
+}
+
+#segmentText {
+  width: 100%;
+  transition: padding .7s ease, line-height .7s ease;
+  padding: 15px 20px 20px;
+  @include responsiveText(14px, 21px, 200px, 1314px);
+  line-height: 28px;
+}
+
+
+
+// Extra small devices (small phones, less than 360px)
+@media (max-width: 360px) {
+  div.pie-container {
+    padding: 10px 12%;
+
+    #pieChart {
+      counter-reset: break-point 40;
+
+      svg {
+        width: 100%;
+      }
+    }
+
+    #pieText {
+      margin-top: 15px;
+
+      .panel {
+        height: 230px;
+        padding: 0;
+
+        #segmentTitle {
+          padding: 2px 4px 4px;
+        }
+        #segmentText {
+          padding: 2px 4px 4px;
+          line-height: 16px;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 360.02px) and (max-width: 442px) {
+  div.pie-container {
+    padding: 10px 10%;
+    
+    #pieChart {
+      counter-reset: break-point 53;
+
+      svg {
+        width: 70%;
+      }
+    }
+
+    #pieText {
+      margin-top: 15px;
+      
+      .panel {
+        height: 210px;
+        padding: 0;
+
+        #segmentTitle {
+          padding: 4px;
+        }
+        #segmentText {
+          padding: 4px;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+}
+// Small/XS devices (portrait phones, less than 576px)
+@media (min-width: 442.02px) and (max-width: 575.98px) {
+  div.pie-container {
+    padding: 10px 10%;
+
+    #pieChart {
+      counter-reset: break-point 60;
+
+      svg {
+        width: 70%;
+      }
+    }
+
+    #pieText {
+      margin-top: 15px;
+
+      .panel {
+        height: 200px;
+        padding: 0;
+
+        #segmentTitle {
+          padding: 4px;
+        }
+        #segmentText {
+          padding: 0 4px 4px;
+          line-height: 21px;
+        }
+      }
+    }
+  }
+}
+// Small devices (smart phones/notebook phone, less than 638px wide)
+@media (min-width: 576px) and (max-width: 637.98px) {
+  div.pie-container {
+    padding: 10px 12%;
+
+    #pieChart {
+      counter-reset: break-point 70;
+
+      svg {
+        width: 60%;
+      }
+    }
+
+    #pieText {
+      margin-top: 20px;
+
+      .panel {
+        padding: 0;
+        height: 205px;
+
+        #segmentTitle {
+          padding: 8px;
+        }
+        #segmentText {
+          padding: 0 8px 8px;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+}
+// Bootstrap col-md Breakpoint at 767px
+@media (min-width: 638px) and (max-width: 767px) {
+  div.pie-container {
+    padding: 10px 15%;
+
+    #pieChart {
+      counter-reset: break-point 80;
+
+      svg {
+        width: 60%;
+      }
+    }
+
+    #pieText {
+      margin-top: 20px;
+
+      .panel {
+        padding: 0 3px;
+        height: 270px;
+
+        #segmentTitle {
+          padding: 15px;
+        }
+        #segmentText {
+          padding: 15px;
+          line-height: 27px;
+        }
+      }
+    }
+  }
+}
+// Medium-Small Devices (tablets and smaller, 767px to 965px)
+@media (min-width: 767.02px) and (max-width: 965px) { 
+  div.pie-container {
+    padding: 10px 4%;
+
+    #pieChart {
+      counter-reset: break-point 50;
+    }
+
+    #pieText .panel {
+      height: 82%;
+      padding: 0;
+
+      #segmentTitle {
+        padding: 8px;
+      }
+      #segmentText {
+        padding: 0 8px 8px;
+        line-height: 23px;
+      }
+    }
+  }
+}
+// Medium-Large Devices (laptop, 965px to 1314px)
+@media (min-width: 965.02px) and (max-width: 1314px) {
+  div.pie-container {
+    padding: 10px 5%;
+
+    #pieChart {
+      counter-reset: break-point 60;
+    }
+
+    #pieText .panel {
+      height: 70%;
+
+      #segmentTitle {
+        padding: 10px;
+      }
+
+      #segmentText {
+        padding: 5px 10px 10px;
+      }
+    }
+  }
+}
+
+// Large Monitors (Smaller than mine)
+@media (min-width: 1314.02px) and (max-width: 1480px) {
+  div.pie-container {
+    padding: 10px 8%;
+
+    #pieChart {
+      counter-reset: break-point 70;
+    }
+    #pieText .panel {
+      #segmentText {
+        padding-top: 10px;
+      }
+    }
+  }
 }
 </style>
 
 </head>
 
 <body>
-        <a href="iframe.html" class="previous">&laquo; Previous</a>
-        <div class="comments">
-                <p>
-                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
-                  <span>in 08.09.2016</span>
-                  <button>repley</button>
-                </p>
-                <p>
-                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
-                  <span>in 08.09.2016</span>
-                  <button>repley</button>
-                </p>
-                <p>
-                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error alias ab enim est consequatur, porro esse distinctio laborum saepe perferendis dicta perspiciatis repellendus tempore praesentium, quaerat inventore quas, eaque nisi!
-                  <span>in 08.09.2016</span>
-                  <button>repley</button>
-                </p>
-              
-              </div>
+      <div class="pie-container">
+  <div class="row">
+    <div class="col-md-5" id="pieChart"></div>
+    <div id="pieText" class="col-md-7 text-container">
+      <div class="panel">
+        <div class="content-wrapper">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
               
     
 
@@ -100,5 +372,277 @@ p:after{
   <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
   <script type="text/javascript" src="main.js"></script>
 </body>
+<script>
+// Credit to Alan at https://codepen.io/amwill04/pen/NGmjyr
 
-</html>
+// When on tablet or phone, initially run or restart the pen from under 767px screen width so that the angle of the selected pie slice animates down instead of to the right when the description box is underneath it.
+
+var data = [{
+  "Title": "HTML",
+  "Amount": 100,
+  "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent rutrum metus vel odio convallis condimentum. Integer ullamcorper ipsum vel dui varius congue. Nulla facilisi. Morbi molestie tortor libero, ac placerat urna mollis ac. Vestibulum id ipsum mauris."
+}, {
+  "Title": "CSS",
+  "Amount": 1000,
+  "Description": "In hac habitasse platea dictumst. Curabitur lacus neque, congue ac quam a, sagittis accumsan mauris. Suspendisse et nisl eros. Fusce nulla mi, tincidunt non faucibus vitae, aliquam vel dolor. Maecenas imperdiet, elit eget condimentum fermentum, sem lorem fringilla felis, vitae cursus lorem elit in risus."
+}, {
+  "Title": "Javascript",
+  "Amount": 1750,
+  "Description": "Aenean faucibus, risus sed eleifend rutrum, leo diam porttitor mauris, a eleifend ipsum ipsum ac ex. Nam scelerisque feugiat augue ac porta. Morbi massa ante, interdum sed nulla nec, finibus cursus augue. Phasellus nunc neque, blandit a nunc ut, mattis elementum arcu."
+}, {
+  "Title": "JSON",
+  "Amount": 600,
+  "Description": "Laboriosam pariatur recusandae ipsum nisi, saepe doloremque nobis eaque omnis commodi dolor porro? Error, deserunt veritatis officiis porro libero et suscipit ad. Ipsum dolor sit amet consectetur adipisicing elit."
+}, {
+  "Title": "React JSX",
+  "Amount": 2000,
+  "Description": "Sit amet consectetur adipisicing elit. Nemo totam perspiciatis tenetur quod ipsam voluptas et consequatur labore harum obcaecati alias voluptate id sit, praesentium ratione nostrum maxime reprehenderit. Deserunt veritatis officiis porro libero et suscipit ad."
+}, {
+  "Title": "WebGL",
+  "Amount": 100,
+  "Description": "Consectetur adipisicing elit. Architecto illum quidem eligendi, consectetur corporis esse enim eveniet distinctio beatae dignissimos recusandae, ipsam aspernatur labore cupiditate, suscipit corrupti accusantium voluptates laborum."
+}, {
+  "Title": "Express",
+  "Amount": 750,
+  "Description": "Beatae, aperiam voluptas aut atque laborum dolorem fuga. Corporis aperiam, illo nobis suscipit perferendis natus doloremque id ratione modi, veritatis beatae maiores Lorem ipsum dolor sit, amet consectetur."
+}, {
+  "Title": "Pug",
+  "Amount": 400,
+  "Description": "Amet consectetur, adipisicing elit. Ipsum perferendis rem illo explicabo voluptate, voluptatum id expedita sapiente magni laboriosam maiores molestiae ut accusamus impedit quos ex excepturi porro voluptates. Nunc dolor metus, aliquam vitae felis id, euismod vulputate metus."
+}, {
+  "Title": "Sass",
+  "Amount": 800,
+  "Description": "Architecto illum quidem eligendi, consectetur corporis esse enim eveniet distinctio beatae dignissimos recusandae, ipsam aspernatur labore cupiditate, suscipit corrupti accusantium voluptates laborum."
+}, {
+  "Title": "MongoDB",
+  "Amount": 450,
+  "Description": "Dolor sit amet consectetur adipisicing elit. Beatae, aperiam. Voluptas aut atque laborum dolorem fuga? Corporis aperiam, illo nobis suscipit perferendis natus doloremque id ratione modi, veritatis beatae maiores."
+}, {
+  "Title": "Bootstrap",
+  "Amount": 450,
+  "Description": "Recusandae ipsum nisi, saepe doloremque nobis eaque omnis commodi dolor porro? Error, deserunt veritatis officiis porro libero et suscipit ad. Dolor sit amet consectetur adipisicing elit. Nemo totam perspiciatis tenetur quod ipsam voluptas et consequatur labore harum obcaecati alias voluptate."
+}];
+
+var width = parseInt(d3.select('#pieChart').style('width'), 10);
+var height = width;
+var radius = (Math.min(width, height) - 15) / 2;
+
+var total = 0;      // used to calculate %s
+data.forEach((d) => {
+  total += d.Amount;
+})
+
+var title = function getObject(obj) {
+  titles = [];
+  for (var i = 0; i < obj.length; i++) {
+    titles.push(obj[i].Title);
+  }
+  return titles
+};
+
+// grabs the responsive value in 'counter-reset' css value
+let innerRadius = $('#pieChart').css('counter-reset').split(' ')[1];
+
+var arcOver = d3.arc()
+  .outerRadius(radius + 10)
+  .innerRadius(innerRadius);
+
+
+var color = d3.scaleOrdinal(); 
+color.domain(title(data))
+  // Comment in/out between ranges below to change colors
+  .range(["#2BDFBB", "#DF2B4F", "#EE6617", "#FFBF00", '#423E6E', '#E24161']);
+  //.range(["#FFFFFF", "#0057E7", "#D62D20", "#008744", "#FFA700", "#0057E7"]);
+  //.range(["#011F4B", "#03396C", "#005B96", "#6497B1", "#B3CDE0"]);
+  //.range(["#B2D8D8", "#66B2B2", "#008080", "#006666", "#004C4C"]);
+  //.range(["#DC6900", "#EB8C00", "#E0301E", "#A32020", "#602320"]);
+  //.range(["#D11141", "#00B159", "#00AEDB", "#FFC425", "#F37735"]);
+  //.range(["#BD0C2F", "#D15238", "#4F283D", "#17263E", "#345999"]);
+  //.range(["#FE0000", "#FDFE02", "#0BFF01", "#011EFE", "#FE00F6"]);
+  //.range(['#0B00FF', '#0097FF', '#00FFF0', '#00FF74', '#0BFF00', '#FFF900', '#FF5500', '#FF0500', '#FF007F', '#B800FF', '#99FF00']);
+  //.range(["#8A76A6", "#54B5BF", "#8EA65B", "#F27B35"]);
+
+// Comment Out Below to Use Diff D3 Color Scheme
+// var color = d3.scaleOrdinal(d3.schemeCategory10);
+// color.domain(title(data))
+
+var arc = d3.arc()
+  .outerRadius(radius - 10)
+  .innerRadius(innerRadius);
+
+var pie = d3.pie()
+  .sort(null)
+  .value(function(d) {
+    return +d.Amount;
+  });
+
+
+// direction of the slice angle (for responsiveness)
+let sliceDirection = 90;
+if(window.matchMedia("(max-width: 767px)").matches) {
+  sliceDirection = 180;
+}
+
+
+var prevSegment = null;
+var change = function(d, i) {
+  var angle = sliceDirection - ((d.startAngle * (180 / Math.PI)) +((d.endAngle - d.startAngle) * (180 / Math.PI) / 2));
+
+  svg.transition()
+    .duration(1000)
+    .attr("transform", "translate(" + radius +
+          "," + height / 2 + ") rotate(" + angle + ")");
+  d3.select(prevSegment)
+    .transition()
+    .attr("d", arc)
+    .style('filter', '');
+  prevSegment = i;
+
+  d3.select(i)
+    .transition()
+    .duration(1000)
+    .attr("d", arcOver)
+    .style("filter", "url(#drop-shadow)");
+};
+
+
+var svg = d3.select("#pieChart").append("svg")
+  .attr("width", '100%')
+  .attr("height", '100%')
+  .attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
+  .attr('preserveAspectRatio', 'xMinYMin')
+  .append("g")
+  .attr("transform", "translate(" + radius + "," + height / 2 + ")")
+  .style("filter", "url(#drop-shadow)");
+
+
+// Create Drop Shadow on Pie Chart
+var defs = svg.append("defs");
+var filter = defs.append("filter")
+    .attr("id", "drop-shadow")
+    .attr("height", "130%");
+
+filter.append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 5.5)
+    .attr("result", "blur");
+
+filter.append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 0)
+    .attr("dy", 0)
+    .attr("result", "offsetBlur");
+
+var feMerge = filter.append("feMerge");
+feMerge.append("feMergeNode")
+    .attr("in", "offsetBlur")
+feMerge.append("feMergeNode")
+    .attr("in", "SourceGraphic");
+
+
+// toggle to allow animation to halfway finish before switching segment again
+var buttonToggle = true;
+var switchToggle = () => {
+  setTimeout(() => {
+    buttonToggle = true;
+  }, 1500)
+}
+
+var timeline = new TimelineLite();
+
+var g = svg.selectAll("path")
+  .data(pie(data))
+  .enter().append("path")
+  .style("fill", function(d) {
+    return color(d.data.Title);
+  })
+  .attr("d", arc)
+  .style("fill", function(d) {
+    return color(d.data.Title);
+  })
+  .on("click", function(d) {
+    
+    if(buttonToggle) {
+      buttonToggle = false;
+      switchToggle();
+      
+      change(d, this);
+      
+      var timeline = new TimelineLite();
+
+      //TweenMax.set(".panel", {perspective:800});
+      //TweenMax.set(".content-wrapper", {transformStyle:"preserve-3d"});
+
+      timeline.to('.content-wrapper', .5, {
+        rotationX: '90deg',
+        opacity: 0,
+        ease: Linear.easeNone,
+        onComplete: () => {$('.content-wrapper').hide();}
+      }).to('.panel', .5, {
+        width: '0%',
+        opacity: .05,
+        ease: Linear.easeNone,
+        onComplete: () => {
+          $('#segmentTitle').replaceWith(`<h1 id="segmentTitle">${d.data.Title} - ${Math.round((d.data.Amount/total) * 1000) / 10}%</h1>`);
+          $('#segmentText').replaceWith('<p id="segmentText">' + d.data.Description + '</p>');
+          $('.panel').css('background-color', `${ColorLuminance(color(d.data.Title), -0.3)}`)
+        }
+      });
+
+
+      timeline.to('.panel', .5, {
+        width: '100%',
+        opacity: 1,
+        ease: Linear.easeNone,
+        onComplete: () => {$('.content-wrapper').show();}
+      }).to('.content-wrapper', .5, {
+        rotationX: '0deg',
+        opacity: 1,
+        ease: Linear.easeNone,
+      })
+    }
+  });
+
+
+timeline.from('#pieChart', .5, {
+  rotation: '-120deg',
+  scale: .1,
+  opacity: 0,
+  ease: Power3.easeOut,
+}).from('.panel', .75, {
+  width: '0%',
+  opacity: 0,
+  ease: Linear.easeNone,
+  onComplete: () => {$('.content-wrapper').show();}
+}, '+=.55').from('.content-wrapper', .75, {
+  rotationX: '-90deg',
+  opacity: 0,
+  ease: Linear.easeNone,
+})
+
+
+// Function to darken Hex colors
+function ColorLuminance(hex, lum) {
+
+	// validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
+}
+
+
+document.querySelector('style').textContent += '@media(max-width:767px) {#pieChart { transform: rotate(90deg); transform-origin: 50% 50%; transition: 1s; max-width: 50%; } .text-container { width: 100%; min-height: 0; }} @media(min-width:768px) {#pieChart { transition: 1s;}}'
+</script>
+</html> -->
