@@ -1,6 +1,6 @@
 
 (function($) {
-    const DEFAULT_WIDTH = "100%";
+    const DEFAULT_WIDTH = "50%";
     const DEFAULT_HEIGHT = "50px";
     const palette = [
         '#26C281',
@@ -56,14 +56,17 @@
             //Prepare wrapper
             div.style.display = "inline-block";
             div.style.height = "100%";
-            div.style.width = `${parseFloat(item.percent*100)}%`;
-            div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value;
+            div.style.width = `50%`;
+            //${parseFloat(item.percent*100)}%
+                div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value
             div.style.position = "relative";
+            div.style.border = "1px solid #000000";
+
             div.classList.add('item-wrapper');
 
            // Percentage span
             let span = document.createElement('span');
-            //span.textContent = `${prettifyPercentage(item.percent*100)} %`;
+            span.textContent = `${prettifyPercentage(item.percent*100)} %`;
             span.style.color = "white";
             span.style.position = "absolute";
             span.style.bottom = 8;
@@ -77,7 +80,7 @@
                 span.style.position = "absolute";
                 span.style.left = 8;
                 span.style.top = 8;
-                span.style.color = "white";
+                span.style.color = "black";
                 span.textContent = item.title;
                 span.style.fontSize = "11px";
                 span.classList.add('item-title');
@@ -134,7 +137,6 @@
 
 }(jQuery));
 $('.chart').segbar({
-    width: "100%",
     height: "50px"
   })
 

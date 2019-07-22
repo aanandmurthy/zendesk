@@ -8,95 +8,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <link href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
   <link href="main.css" rel="stylesheet">
-  <script src="segbar.js"></script>
  
 </head>
-<body>
-      <div class="container"> 
-        <div class="row justify-content-start">
-          
-            <div class="col align-self-center">
-                <p>
-              
-                    <i class="fas fa-user-circle userSize" data-toggle="collapse" data-target="#Userdetails" aria-expanded="false" aria-controls="collapseExample"></i>
-                    
-              </p> 
-              
-              </div>
-            
-            </div>
-            <div class="row">
-                <span><a href="analytic.html"><i class="fa fa-sun"></i>Denkstil</a> </span>
-                <div class="chart1 "></div>
-            </div>
-            <div class="col-12 margin-30" ></div>
-            <div class="row " id="marginOwn" >
-           
-                <span> <a href="mood.html"><i class="fa fa-brain"></i>Regulatorischer Focus</a></span>
-                <div class="chart2"></div>
-            </div>
-            <div class="row">
-                <span><a href="risk.html"> <i class="fa fa-sun"></i>Stimmung</a></span>
-                <div class="chart3"></div>
-            </div>
-          </div>
-          <div class="col-12" ></div>
-          
-     </div>  
+<body >
+    <!-- onload="LoadPage2()" -->
+      
  
-  <div id="content"></div>
-
-  <div class="row">
-    <button type="button" class="btn btn-warning" onclick="location.href='augmented.html'">Suggestion for Reply</button>
-  </div>
-   <script> 
-   // $('.chart1').segbar([
-  //{
-    //data: [
-      //{ title: 'Analytizch', value: 16744 },
-      //{  title: 'spontaneous', value: 6500 },
-
-    //]
-  //},
   
-//])
-// $('.chart2').segbar([
-//   {
-//     data: [
-//       { title: 'gewinn orientiert', value: 10.87, color: '#8E44AD' },
-//       { title: 'verlustorientiert', value: 14.56, color: '#81CFE0' },
-//     ]
-//   },
-// ])
-// $('.chart3').segbar([
-//   {
-//     data: [
-//       { title: 'gut gelaunt', value: 6.87, color: '#8E44AD' },
-//       { title: 'Schlecht gelaunt ', value: 14.56, color: '#81CFE0' },
-//     ]
-//   },
-// ])
-
-</script>
-  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
-  <script>
- $(function() {
-  var client = ZAFClient.init();
-  client.invoke('resize', { width: '100%', height: '500px' });
-  client.get('ticket.requester.id').then(
-	function(data) {
-    var user_id = data['ticket.requester.id'];
-        console.log(client, user_id );    
-	}
-  );
-  //description of the customer
-  client.get('ticket.description').then(function(data) {
-     user_text=data['ticket.description'];
-    console.log(user_text);
-  
-  });
-})
-  </script>
   <script id="requester-template" type="text/x-handlebars-template">
     <table>
     <tr>
@@ -127,8 +45,9 @@
   <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script> 
-
   <script type="text/javascript" src="main.js"></script>
+
+  
 
   <script src="segbar.js"></script>
   <script src='augmented.js'></script>
@@ -136,3 +55,4 @@
 </body>
 
 </html>
+-

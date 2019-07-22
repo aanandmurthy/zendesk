@@ -7,87 +7,199 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <link href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+
   <link href="main.css" rel="stylesheet">
 
 </head>
 <body>
+  <section id="login">
   <h2>Welcome Onboard</h2>
   <form action="mailto:ashwini.anandmurthy@100worte.de" method="get">
-    First name: <input type="text" name="fname"><br>
+    First name: <input type="text" name="fname" required><br>
     Last name: <input type="text" name="lname"><br>
     Email:<input type="text" name="Email">
     <button type="submit">Submit</button><br>
     <p>Enter The Api key</p>
-    <input type="text" name="Api-key"><br>
-    <button type="submit" formaction="page1.html"  >Submit to another page</button>
+    
   </form>
- 
-  <div id="content"></div>
-
-   <script> 
-   // $('.chart1').segbar([
-  //{
-    //data: [
-      //{ title: 'Analytizch', value: 16744 },
-      //{  title: 'spontaneous', value: 6500 },
-
-    //]
-  //},
+  <input type="text" name="Api-key" required><br>
+    <button type="button" onClick="JavaScript:validateAccessKey()" >Submit to another page</button>
+  </section>
   
-//])
-// $('.chart2').segbar([
-//   {
-//     data: [
-//       { title: 'gewinn orientiert', value: 10.87, color: '#8E44AD' },
-//       { title: 'verlustorientiert', value: 14.56, color: '#81CFE0' },
-//     ]
-//   },
-// ])
-// $('.chart3').segbar([
-//   {
-//     data: [
-//       { title: 'gut gelaunt', value: 6.87, color: '#8E44AD' },
-//       { title: 'Schlecht gelaunt ', value: 14.56, color: '#81CFE0' },
-//     ]
-//   },
-// ])
+  <div class="container" id="suggested"> 
+      <div class="row">
+        
+          <div class="col">
+              <p>
+            
+                  <i class="fas fa-user-circle userSize" data-toggle="collapse" data-target="#Userdetails" aria-expanded="false" aria-controls="collapseExample"></i>
+                  
+            </p> 
+            
+            </div>
+          
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <span><a href="analytic.html"><i class="fa fa-sun"></i>Denkstil</a> </span>
+            </div>
+                          
+          </div>
+          <div class="row ">
+            <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;">
+                <div class="col-sm-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;">
+                    <div class="chart1 col-md-3 " style="width: 50%">Analytizch</div>
+                    <div class="chart4 col-md-3 " ></div>
+                </div>
+                
+                
+            </div>
+      
+            </div>
+          <div class="col-12 margin-30" ></div>
+          <div class="row " id="marginOwn" >
+         
+              <span> <a href="mood.html"><i class="fa fa-brain"></i>Regulatorischer Focus</a></span>
+              <div class="chart2"></div>
+          </div>
+          <div class="row">
+              <span><a href="risk.html"> <i class="fa fa-sun"></i>Stimmung</a></span>
+              <div class="chart3"></div>
+          </div>
+        
+        <div class="col-12" ></div>
+        <div class="row">
+          <div class="col-sm-12"> 
+            <button type="button" class="btn btn-warning" onclick="showAnalysis()">Suggestion for Reply</button>
+          </div>
+          </div>
+   </div>  
 
-</script>
-
-  <script id="requester-template" type="text/x-handlebars-template">
+  <div class="container" id="analysis">
+      <div class="form-group">
+          <label for="comment">Comment:</label>
+          <div style="height: 200px; width: 300px;">
+              <div id="c1" style="overflow: auto; max-height: 200px;">
+                  <textarea class="form-control" rows="8" id="comment"></textarea>
+              </div>
+             
+            </div>
+        
+        </div>
+        <div class="container-fluid">
+          <table id="bargraph">
+                  <tr>
+                    <td> 2</td>
+                    <td> 8</td>
+                  </tr>
+                  
+                
+               
+              
+           
+          </table>
+        </div>
+      
+       
+        <div id="chart">
+          <canvas id="myChart" width="200" height="300"></canvas>
+        </div>
+  </div>
+   <script id="requester-template" type="text/x-handlebars-template">
     <table>
-    <tr>
-      <td>Customer:</td>
-      <td class="data">{{name}}</td>
-    </tr>
-   {{#if tags}}
-    <tr>
-      <td>Tags:</td>
-      <td class="data">{{#each tags}}{{this}} {{/each}}</td>
-    </tr>
-    {{/if}}
-    <tr>
-      <td>Added:</td>
-      <td class="data">{{created_at}}</td>
-    </tr>
-    <tr>
-        <tr>
-            <td>description:</td>
-            <td class="data">{{description}}</td>
-          </tr>
-          <tr>
-      <td>Last signed in:</td>
-      <td class="data">{{last_login_at}}</td>
-    </tr>
-    </table>
-  </script>
+     <tr>
+       <td>Customer:</td>
+       <td class="data">{{name}}</td>
+     </tr>
+    {{#if tags}}
+     <tr>
+       <td>Tags:</td>
+       <td class="data">{{#each tags}}{{this}} {{/each}}</td>
+     </tr>
+     {{/if}}
+     <tr>
+       <td>Added:</td>
+       <td class="data">{{created_at}}</td>
+     </tr>
+     <tr>
+         <tr>
+           <td>description:</td>
+             <td class="data">{{description}}</td>
+           </tr>
+           <tr>
+       <td>Last signed in:</td>
+       <td class="data">{{last_login_at}}</td>
+   </tr>
+     </table>
+     <div>{{description}}</div>
+   </script>
  
   <script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
-  <!-- <script src="segbar.js"></script> -->
-  <script src='augmented.js'></script>
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
+  
+  <script src="segbar.js"></script>
+  <script>
+     var twoColComp = {
+  init: function (){
+    var tables = document.getElementsByTagName('table');
+
+    for(var i = 0; i < tables.length; i++) {
+      if (new RegExp('(^| )two-column-comp( |$)', 'gi').test(tables[i].className)){
+         return;
+      }
+
+      var h = tables[i].clientHeight, 
+          t = tables[i].getBoundingClientRect().top,
+          wT = window.pageYOffset || document.documentElement.scrollTop,
+          wH = window.innerHeight;
+
+      if(wT + wH > t + h/2){
+         this.make(tables[i]);
+       }
+    }
+  },
+  
+  make : function(el){
+    var rows = el.getElementsByTagName('tr'),
+        vals = [],
+        max,
+        percent;
+
+    for(var x = 0; x < rows.length; x++) {
+      var cells = rows[x].getElementsByTagName('td');
+      for(var y = 1; y < cells.length; y++){
+        vals.push(parseInt(cells[y].innerHTML, 10));
+      }
+    }
+
+    max = Math.max.apply( Math, vals );
+    percent = 100/max;
+
+    for(x = 0; x < rows.length; x++) {
+      var cells = rows[x].getElementsByTagName('td');
+      for(var y = 1; y < cells.length; y++){
+        var currNum = parseInt(cells[y].innerHTML, 10);
+        cells[y].style.backgroundSize = percent * currNum + "% 100%";
+        cells[y].style.transitionDelay = x/20 + "s";
+      } 
+    }
+
+    el.className =+ " two-column-comp"
+  }
+}
+
+window.onload = function(){
+  twoColComp.init();
+}
+
+window.onscroll = function(){
+  twoColComp.init();
+}
+          </script>
   <script type="text/javascript" src="main.js"></script>
 </body>
+
 
 </html>

@@ -1,8 +1,21 @@
 //main function of all
 var user_text;
-$(function zendesk_app_init() {
+$(function () {
+  
+  if(localStorage.getItem("accessKey"))
+  {
+    $("#login").hide();
+    $("#suggested").show();
+    $("#analysis").hide();
+  }
+  else
+  {
+    $("#suggested").hide();
+    $("#login").show();
+    $("#analysis").hide();
+  }
   var client = ZAFClient.init();
-  client.invoke('resize', { width: '100%', height: '500px' });
+  client.invoke('resize', { width: 'auto', height: '500px' });
   client.get('ticket.requester.id').then(
 	function(data) {
     var user_id = data['ticket.requester.id'];
@@ -15,28 +28,32 @@ $(function zendesk_app_init() {
     console.log(user_text);
     afterLogin(user_text);
     thinking(user_text);
-    risk(user_text)
+    mood(user_text)
   });
   //ticket.editor.insert
   client.get('comment.text').then(function(data){
-    var comment=data["comment.text"];
-    console.log(comment);
-
-  })
-  //ticket user image
-  client.get('user_photo.requester.avatarUrl').then(function(){
-    var imageshow='user_photo.requester.avatarUrl';
-    console.log(imageshow);
-
-  })
-  
-  client.get('comment.attachments.0.filename')
-  //TICKETCOMMENT.TYPE
-  client.get('comment.type').then(function(data){
-    var typetext=data['comment.type'];
+    var typetext=data['comment.text'];
+    $('#comment').text(typetext);
     console.log(typetext);
+    beforeLogin(typetext);
   })
+  client.on("api_notification.event_name", function(data) {
+    console.log(data.body, data.sender);
+  });
+  
 });
+
+
+function validateAccessKey()
+{
+  var accessKey=$("input[name='Api-key']").val();
+  if(accessKey)
+  {
+    localStorage.setItem("accessKey",accessKey);
+    $("#suggested").show();
+    $("#login").hide();
+  }
+}
 //call the data of user
 function requestUserInfo(client, id ) {
   var settings = {
@@ -138,19 +155,31 @@ function formatDate(date) {
      },
      success:function(response){
          var useerdetail= response.skills.analytics;
-         console.log(apikey);
-         console.log( useerdetail);
-        console.log("success");
-        console.log(user_text);
+        if (useerdetail < 0){
+          console.log( "user_text" + useerdetail);
+            $('.chart4').segbar([{
+              width: "50%",
+              height: "50px",
+              data: [
+                
+                {  title: 'spontaneous', value:parseInt(useerdetail),color: '#8E44AD'},
+          
+              ]}])
+        }else{
+          console.log("hello" + useerdetail)
+          $('.chart1').segbar([{
+            width: "50%",
+            height: "50px",
+            data: [
+              { title: 'Analytizch', value: parseInt(useerdetail)},
+              
+        
+            ]}])
+        }
+        
 
-        $('.chart1').segbar([{
-          width: "60%",
-          height: "50px",
-          data: [
-            { title: 'Analytizch', value: parseInt(useerdetail)},
-            {  title: 'spontaneous', value: parseInt(100-useerdetail.toString())},
       
-          ]}])
+        
         },
           
         //analysisInfo(response);
@@ -187,10 +216,11 @@ function formatDate(date) {
          console.log(apikey);
          console.log( useeremotionality);
         console.log("success");
-
+          
         $('.chart2').segbar([{
-          width: "80%",
+          width: "100%",
           height: "50px",
+          
           data: [
             { title: 'gewinn orientiert', value: parseInt(useeremotionality) ,color: '#8E44AD'},
             {  title: 'verlustorientiert', value: parseInt(100-useeremotionality.toString()) ,color: '#81CFE0'},
@@ -209,7 +239,7 @@ function formatDate(date) {
   });
   }
   var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
-  function risk(user_text)
+  function mood(user_text)
   {
     $.ajax({
       url: "https://dev.100worte.de/v1/api/customer_intelligence/analyse",
@@ -224,25 +254,25 @@ function formatDate(date) {
       'x-api-key' : apikey,
      },
      success:function(response){
-         var useerrisk= response.skills.orientation;
-         var posi=response.zindex.posEmo;
+         var goomood= response.zindex.posEmo;
+         var badmood=response.zindex.negEmo;
        
-         console.log(posi);
-         console.log(useerrisk);
-        console.log("success");
-       
-
+         console.log(goomood);
+         console.log(badmood);
+   
         $('.chart3').segbar([{
-          width: "80%",
+          width: "100%",
           height: "50px",
+        
           data: [
-            { title: 'gut gelaunt', value: parseInt(useerrisk) ,color: '#8E44AD'},
-            {  title: 'Schlecht gelaunt', value: parseInt(100%-useerrisk.toString()) ,color: '#81CFE0'},
+            { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000'},
+            {  title: 'bad mood', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000'},
       
           ]}])
-        },
-          
-        //analysisInfo(response);
+      
+       
+      },
+   
   
       
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -252,6 +282,88 @@ function formatDate(date) {
    
   });
   }  
+
+  
+var awapikey='cb1d8448-4583-4b39-9e5b-65cb7b5bf73d';
+function beforeLogin(typeText)
+{
+  $.ajax({
+    url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
+   method: "post",
+   data: JSON.stringify(
+    {
+        
+            "text": typeText,
+            "lang": "en",
+            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
+            // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
+          
+    }
+  ),
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key' : awapikey,
+   },
+   success:function(response){
+       var cat= response.scores;
+      console.log(cat);
+      var scores=[
+        cat[ "overall"],
+        cat[ "orientation"],
+        cat[ "authenticity"],
+        cat[ "jointPosAchieve"],
+        
+        
+        cat[ "jointPosAffil"],
+        
+        cat[ "jointPosPower"],
+        cat[ "emotionality"]
+      ];
+       console.log(awapikey);
+      console.log("success");
+      var data = {
+        datasets: [{
+            data: scores,
+            backgroundColor: [
+                "#FF6384",
+                "#4BC0C0",
+                "#FFCE56",
+                "#E7E9ED",
+                "#36A2EB"
+            ],
+           // label: 'My dataset' // for legend
+        }],
+        labels: [
+          "overall",
+          "orientation",
+          "emotionality",
+          "authenticity",
+          "Power",
+          "jointPosAchieve",
+          "jointPosPower"
+        ]
+    };
+    console.log(data);
+    var ctx = $("#myChart");
+new Chart(ctx, {
+    data: data,
+    type: 'polarArea'
+});
+   },
+   
+    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        console.log("not fetching data");
+        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+    } ,
+ 
+});
+}
+
+function showAnalysis()
+{
+$('#analysis').show();
+beforeLogin('Abcdefghijklmnopqrsuvw');
+}
 //display the data above
 //function analysisInfo(response) {
   //var reponser_data = {

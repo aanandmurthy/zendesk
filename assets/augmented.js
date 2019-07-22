@@ -46,7 +46,7 @@ function beforeLogin()
           "Power"
         ]
     };
-    console.log(data);s
+    console.log(data);
    },
    
     error: function(XMLHttpRequest, textStatus, errorThrown) { 
