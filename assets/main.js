@@ -34,13 +34,10 @@ $(function () {
   client.get('comment.text').then(function(data){
     var typetext=data['comment.text'];
     $('#comment').text(typetext);
-    console.log(typetext);
     beforeLogin(typetext);
+    genderGraph(typetext);
   })
-  client.on("api_notification.event_name", function(data) {
-    console.log(data.body, data.sender);
-  });
-  
+
 });
 
 
@@ -109,35 +106,7 @@ function formatDate(date) {
   date = cdate.toLocaleDateString("en-us", options);
   return date;
 }
-/*call api for data analysis*/
-//var apiKey = 'f0f1575d-fd13-4db0-a0db-ac7e18cdfea2';
-// var hundredwortesession;
- 
-//   $.ajax({
-//     url: "https://dev.100worte.de/v1/login",
-//     method: "post",
-//     data: JSON.stringify(
-//       {
-//         "email": "alice@100worte.de",
-//         "password": "100worte"
-//       }
-//     ),
-//     headers: {
-//      'Content-Type': 'application/json',
-//      'x-api-key' : apiKey,
-//     },
-   
-//     success:function(_data, textStatus, request,response){
-//        hundredwortesession=request.getResponseHeader('session');
-//         debugger;
-//       console.log(hundredwortesession);
-//       afterLogin();
-//       },
-//      error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//       console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-//      } ,
-  
-//   });
+
   var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
   function afterLogin(user_text)
   {
@@ -147,6 +116,7 @@ function formatDate(date) {
      data: JSON.stringify(
       {
         "text":user_text,
+        
       }
     ),
     headers: {
@@ -156,35 +126,31 @@ function formatDate(date) {
      success:function(response){
          var useerdetail= response.skills.analytics;
         if (useerdetail < 0){
+          $(".chart1").hide();
           console.log( "user_text" + useerdetail);
             $('.chart4').segbar([{
-              width: "50%",
+              width: "100%",
               height: "50px",
               data: [
-                
-                {  title: 'spontaneous', value:parseInt(useerdetail),color: '#8E44AD'},
+                { title: 'Analytizch', value: parseInt(useerdetail),color:'#ffffff'},
+                {  title: 'spontaneous', value:parseInt(useerdetail),color: '#4EC3F7'},
           
               ]}])
         }else{
+          $(".chart4").hide();
           console.log("hello" + useerdetail)
           $('.chart1').segbar([{
-            width: "50%",
+            width: "100%",
             height: "50px",
             data: [
-              { title: 'Analytizch', value: parseInt(useerdetail)},
+              { title: 'Analytizch', value: parseInt(useerdetail),color: '#4EC3F7'},
+              {  title: 'spontaneous', value:parseInt(useerdetail),color: '#ffffff'},
               
         
             ]}])
         }
-        
-
       
-        
         },
-          
-        //analysisInfo(response);
-  
-      
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
           console.log("not fetching data");
           console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
@@ -208,29 +174,34 @@ function formatDate(date) {
       'x-api-key' : apikey,
      },
      success:function(response){
-         var useeremotionality= response.skills.emotionality;
-         var text1='Diese Grapefruitsaft kostet nur 3,90 Euro und ist damit deutlich preiswerter als die Säfte von anderen Anbietern" "Der Zuckeranteil ist sehr vorteilhaft, da nur 99% der Inhaltsstoffe natürlichen Ursprungs sind.';
-         if(useeremotionality > 1.0){
-           console.log(text1);          
-         }
-         console.log(apikey);
-         console.log( useeremotionality);
-        console.log("success");
+         var risk= response.zindex.risk;
+         var reward=response.zindex.reward;
+         if (risk > reward){
+          $(".chart5").hide();
+          console.log( "user_text" + risk);
+            $('.chart2').segbar([{
+              width: "100%",
+              height: "50px",
+              data: [
+                
+                { title: 'risk', value: parseInt(risk) ,color: '#8E44AD'},
+                {  title: 'reward', value: parseInt(reward) ,color: '#ffffff'},
           
-        $('.chart2').segbar([{
-          width: "100%",
-          height: "50px",
-          
-          data: [
-            { title: 'gewinn orientiert', value: parseInt(useeremotionality) ,color: '#8E44AD'},
-            {  title: 'verlustorientiert', value: parseInt(100-useeremotionality.toString()) ,color: '#81CFE0'},
-      
-          ]}])
-        },
-          
-        //analysisInfo(response);
-  
-      
+              ]}])
+        }else{
+          $(".chart2").hide();
+          console.log("hello" + risk)
+          $('.chart5').segbar([{
+            width: "100%",
+            height: "50px",
+            data: [
+
+              { title: 'risk', value: parseInt(risk) ,color: '#ffffff'},
+              {  title: 'reward', value: parseInt(reward) ,color: '#A7EFDE'},
+        
+            ]}])
+        }
+      },
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
           console.log("not fetching data");
           console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
@@ -257,20 +228,31 @@ function formatDate(date) {
          var goomood= response.zindex.posEmo;
          var badmood=response.zindex.negEmo;
        
-         console.log(goomood);
-         console.log(badmood);
-   
-        $('.chart3').segbar([{
-          width: "100%",
-          height: "50px",
+         if (goomood > badmood){
+          $(".chart6").hide();
+          console.log( "user_text" + badmood);
+            $('.chart3').segbar([{
+              width: "100%",
+              height: "50px",
+              data: [
+                { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000',color:'#78A30C'},
+                {  title: 'bad gelaunt', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000',color:'#ffffff'},
+          
+              ]}])
+        }else{
+          $(".chart3").hide();
+          console.log("hello" + badmood)
+          $('.chart6').segbar([{
+            width: "100%",
+            height: "50px",
+            data: [
+              { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000',color:'#ffffff'},
+            {  title: 'bad gelaunt', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000',color:'#E34F32'},
+              
         
-          data: [
-            { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000'},
-            {  title: 'bad mood', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000'},
-      
-          ]}])
-      
-       
+            ]}])
+        }
+   
       },
    
   
@@ -305,6 +287,7 @@ function beforeLogin(typeText)
     'x-api-key' : awapikey,
    },
    success:function(response){
+    
        var cat= response.scores;
       console.log(cat);
       var scores=[
@@ -349,6 +332,63 @@ new Chart(ctx, {
     data: data,
     type: 'polarArea'
 });
+
+   },
+   
+    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        console.log("not fetching data");
+        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+    } ,
+ 
+});
+}
+function genderGraph(typeText)
+{
+  $.ajax({
+    url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
+   method: "post",
+   data: JSON.stringify(
+    {
+        
+            "text": typeText,
+            "lang": "en",
+            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
+            // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
+          
+    }
+  ),
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key' : awapikey,
+   },
+   success:function(response){
+    var genderBalance=response.scores.genderBalance;
+
+    if (genderBalance > 1){
+      $(".chart8").hide();
+      console.log( "user_text" + genderBalance);
+        $('.chart7').segbar([{
+          width: "100%",
+          height: "50px",
+          data: [
+            { title: 'Male', value: parseInt(genderBalance) ,color:'#C892D3'},
+            {  title: 'Female', value: parseInt(genderBalance) ,color: '#81CFE0',color:'#ffffff'},
+      
+          ]}])
+    }else{
+      $(".chart7").hide();
+      $('.chart8').segbar([{
+        width: "100%",
+        height: "50px",
+        data: [
+          { title: 'Male', value: parseInt(genderBalance) ,border:'1px solid #000000',color:'#ffffff'},
+        {  title: 'Female', value: parseInt(genderBalance) ,color: '#81CFE0',border:'1px solid #000000',color:'#C892D3'},
+          
+    
+        ]}])
+    }
+    
+
    },
    
     error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -362,17 +402,9 @@ new Chart(ctx, {
 function showAnalysis()
 {
 $('#analysis').show();
-beforeLogin('Abcdefghijklmnopqrsuvw');
-}
-//display the data above
-//function analysisInfo(response) {
-  //var reponser_data = {
-    //'analytics': response.skills.analytics,
-    //'emotionality': response.skills.emotionality,
-//};
-//console.log(reponser_data);
 
-//}
+}
+
 
 
 

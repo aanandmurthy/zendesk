@@ -30,12 +30,7 @@
       <div class="row">
         
           <div class="col">
-              <p>
-            
-                  <i class="fas fa-user-circle userSize" data-toggle="collapse" data-target="#Userdetails" aria-expanded="false" aria-controls="collapseExample"></i>
-                  
-            </p> 
-            
+              <div id="content"></div>
             </div>
           
           </div>
@@ -48,26 +43,51 @@
           <div class="row ">
             <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;">
                 <div class="col-sm-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;">
-                    <div class="chart1 col-md-3 " style="width: 50%">Analytizch</div>
-                    <div class="chart4 col-md-3 " ></div>
+                    <div class="chart1 col-md-3 " style=" padding: 0px;"></div>
+                    <div class="chart4 col-md-3 " style=" padding: 0px;"></div>
                 </div>
                 
                 
             </div>
       
             </div>
-          <div class="col-12 margin-30" ></div>
-          <div class="row " id="marginOwn" >
          
-              <span> <a href="mood.html"><i class="fa fa-brain"></i>Regulatorischer Focus</a></span>
-              <div class="chart2"></div>
+          <div class="row">
+              <div class="col-sm-12">
+                  <span><a href="analytic.html"><i class="fa fa-brain"></i>Regulatorischer Focus</a> </span>
+              </div>
+                            
+            </div>
+          <div class="row " >
+         
+            
+              <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;">
+                  <div class="col-sm-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;">
+                      <div class="chart2 col-md-3 " style=" padding: 0px;"></div>
+                      <div class="chart5 col-md-3 " style=" padding: 0px;"></div>
+                  </div>
+                  
+                  
+              </div>
+        
           </div>
           <div class="row">
-              <span><a href="risk.html"> <i class="fa fa-sun"></i>Stimmung</a></span>
-              <div class="chart3"></div>
+              <span><a href="analytic.html"> <i class="fa fa-sun"></i>Stimmung</a></span>
+          </div>
+              <div class="row " >
+         
+            
+                  <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;">
+                      <div class="col-sm-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;">
+                          <div class="chart3 col-md-3 " style=" padding: 0px;"></div>
+                          <div class="chart6 col-md-3 " style=" padding: 0px;"></div>
+                      </div>
+                      
+                      
+                  </div>
           </div>
         
-        <div class="col-12" ></div>
+          <div class="col-12 margin-30" ></div>
         <div class="row">
           <div class="col-sm-12"> 
             <button type="button" class="btn btn-warning" onclick="showAnalysis()">Suggestion for Reply</button>
@@ -76,7 +96,7 @@
    </div>  
 
   <div class="container" id="analysis">
-      <div class="form-group">
+      <div class="form-group" id="refresh">
           <label for="comment">Comment:</label>
           <div style="height: 200px; width: 300px;">
               <div id="c1" style="overflow: auto; max-height: 200px;">
@@ -86,22 +106,26 @@
             </div>
         
         </div>
-        <div class="container-fluid">
-          <table id="bargraph">
-                  <tr>
-                    <td> 2</td>
-                    <td> 8</td>
-                  </tr>
-                  
-                
-               
-              
-           
-          </table>
-        </div>
-      
        
-        <div id="chart">
+        <div class="row">
+          <div class="col-sm-12">
+            <button type="button" onclick="beforeLogin('Abcdefghijklmnopqrsuvw');">ShowGraph</button>
+          </div>
+        </div>
+       
+        <div class="container-fluid">
+          
+            <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;">
+                <div class="col-sm-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;">
+                    <div class="chart7 col-md-3 " style=" padding: 0px;"></div>
+                    <div class="chart8 col-md-3 " style=" padding: 0px;"></div>
+                </div>
+                
+                
+            </div>
+        </div>
+       
+        <div id="chart"  class="analysis1">
           <canvas id="myChart" width="200" height="300"></canvas>
         </div>
   </div>
@@ -111,7 +135,7 @@
        <td>Customer:</td>
        <td class="data">{{name}}</td>
      </tr>
-    {{#if tags}}
+    <!-- {{#if tags}}
      <tr>
        <td>Tags:</td>
        <td class="data">{{#each tags}}{{this}} {{/each}}</td>
@@ -131,7 +155,7 @@
        <td class="data">{{last_login_at}}</td>
    </tr>
      </table>
-     <div>{{description}}</div>
+     <div>{{description}}</div> -->
    </script>
  
   <script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>

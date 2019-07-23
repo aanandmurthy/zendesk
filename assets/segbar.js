@@ -22,6 +22,7 @@
         '#8E44AD',
         '#D24D57',
         '#CF000F',
+        '#4EC3F7',
         '#86E2D5'
     ];
 
@@ -58,7 +59,7 @@
             div.style.height = "100%";
             div.style.width = `50%`;
             //${parseFloat(item.percent*100)}%
-                div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value
+                div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value(parseFloat(item.percent*100))
             div.style.position = "relative";
             div.style.border = "1px solid #000000";
 
