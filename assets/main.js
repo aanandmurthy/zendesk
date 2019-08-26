@@ -1,8 +1,11 @@
 //main function of all
 var user_text;
+var profiledetails;
 $(function () {
-  
-  if(localStorage.getItem("accessKey"))
+  var client = ZAFClient.init();
+  $("#apiarea").hide();
+  var defaultValue=true;
+  if(defaultValue)
   {
     $("#login").hide();
     $("#suggested").show();
@@ -14,7 +17,7 @@ $(function () {
     $("#login").show();
     $("#analysis").hide();
   }
-  var client = ZAFClient.init();
+
   client.invoke('resize', { width: 'auto', height: '500px' });
   client.get('ticket.requester.id').then(
 	function(data) {
@@ -24,29 +27,55 @@ $(function () {
   );
   //description of the customer
   client.get('ticket.description').then(function(data) {
+   
      user_text=data['ticket.description'];
     console.log(user_text);
     afterLogin(user_text);
-    thinking(user_text);
-    mood(user_text)
+    // thinking(user_text);
+    mood(user_text);
+    newgraph(user_text)
   });
   //ticket.editor.insert
   client.get('comment.text').then(function(data){
     var typetext=data['comment.text'];
-    $('#comment').text(typetext);
-    beforeLogin(typetext);
-    genderGraph(typetext);
+    var cleantypeText = typetext.replace(/(<([^>]+)>)/ig,"");
+    var wordcount =cleantypeText.trim().split(' ');
+    $('#wordCount').hide();
+    if(wordcount.length < 50 ){
+      $('#wordCount').show();
+       $('#wordcount').html("In order to obtain a reliable result, the individual text samples should contain at least 50 words!");
+    }else{
+      $('#wordCount').hide();
+    }
+    
+ 
+    console.log(wordcount);
+    $('#comment').text(cleantypeText);
+    beforeLogin(cleantypeText);
+    //genderGraph(typetext);
+    genderGraph1(cleantypeText,null);
   })
 
 });
-
+var client = ZAFClient.init();
+client.get('ticket.requester.name').then(function(data) {
+  console.log(data); // { "ticket.requester.name": "Mikkel Svane" }
+});
 
 function validateAccessKey()
 {
-  var accessKey=$("input[name='Api-key']").val();
-  if(accessKey)
+  var apiaccesKey=$("input[name='Api-key']").val();
+  if(apiaccesKey)
   {
-    localStorage.setItem("accessKey",accessKey);
+    var client = ZAFClient.init();
+    //client.set({'metadata':accessKey:apiaccesKey});
+    localStorage.localStorage.setItem('accessKey',apiaccesKey)
+    client.metadata().then(function(metadata){
+
+      metadata.accessKey=accessKey;
+      console.log(metadata);
+    });
+  
     $("#suggested").show();
     $("#login").hide();
   }
@@ -120,34 +149,30 @@ function formatDate(date) {
       }
     ),
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       'x-api-key' : apikey,
      },
      success:function(response){
+       debugger;
+       console.log("Analyticalresponse");
+       console.log(response);
          var useerdetail= response.skills.analytics;
-        if (useerdetail < 0){
-          $(".chart1").hide();
-          console.log( "user_text" + useerdetail);
-            $('.chart4').segbar([{
-              width: "100%",
-              height: "50px",
-              data: [
-                { title: 'Analytizch', value: parseInt(useerdetail),color:'#ffffff'},
-                {  title: 'spontaneous', value:parseInt(useerdetail),color: '#4EC3F7'},
+         var widthvalue=Math.abs(parseInt(useerdetail));
+         if (useerdetail > 0){
           
-              ]}])
+   
+        console.log(widthvalue);
+           var f = $(".f").width(widthvalue +28) / $('.fparent').width() * 100;
+          
+          $('.f').html( widthvalue + "%");
+          console.log();
+        var g= $(".g").width(0);
         }else{
-          $(".chart4").hide();
-          console.log("hello" + useerdetail)
-          $('.chart1').segbar([{
-            width: "100%",
-            height: "50px",
-            data: [
-              { title: 'Analytizch', value: parseInt(useerdetail),color: '#4EC3F7'},
-              {  title: 'spontaneous', value:parseInt(useerdetail),color: '#ffffff'},
-              
-        
-            ]}])
+         
+             var g = $(".g").width((Math.abs(widthvalue))+28) / $('.fparent').parent().width() * 100;  
+             var f = $(".f").width(0);
+             $('.g').html( widthvalue + "%");
         }
       
         },
@@ -159,57 +184,7 @@ function formatDate(date) {
   });
   }
   var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
-  function thinking(user_text)
-  {
-    $.ajax({
-      url: "https://dev.100worte.de/v1/api/customer_intelligence/analyse",
-     method: "put",
-     data: JSON.stringify(
-      {
-        "text":user_text,
-      }
-    ),
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key' : apikey,
-     },
-     success:function(response){
-         var risk= response.zindex.risk;
-         var reward=response.zindex.reward;
-         if (risk > reward){
-          $(".chart5").hide();
-          console.log( "user_text" + risk);
-            $('.chart2').segbar([{
-              width: "100%",
-              height: "50px",
-              data: [
-                
-                { title: 'risk', value: parseInt(risk) ,color: '#8E44AD'},
-                {  title: 'reward', value: parseInt(reward) ,color: '#ffffff'},
-          
-              ]}])
-        }else{
-          $(".chart2").hide();
-          console.log("hello" + risk)
-          $('.chart5').segbar([{
-            width: "100%",
-            height: "50px",
-            data: [
-
-              { title: 'risk', value: parseInt(risk) ,color: '#ffffff'},
-              {  title: 'reward', value: parseInt(reward) ,color: '#A7EFDE'},
-        
-            ]}])
-        }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) { 
-          console.log("not fetching data");
-          console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-      } ,
-   
-  });
-  }
-  var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
+ 
   function mood(user_text)
   {
     $.ajax({
@@ -221,42 +196,31 @@ function formatDate(date) {
       }
     ),
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       'x-api-key' : apikey,
      },
      success:function(response){
-         var goomood= response.zindex.posEmo;
-         var badmood=response.zindex.negEmo;
-       
-         if (goomood > badmood){
-          $(".chart6").hide();
-          console.log( "user_text" + badmood);
-            $('.chart3').segbar([{
-              width: "100%",
-              height: "50px",
-              data: [
-                { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000',color:'#78A30C'},
-                {  title: 'bad gelaunt', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000',color:'#ffffff'},
+            
+       profiledetails=response.profile;
+        genderGraph1(user_text,profiledetails);
+        beforeLogin(user_text,profiledetails);
+         var emtionaitly=response.skills.emotionality;
+         var width2=Math.abs(parseInt(emtionaitly));
+         if (emtionaitly > 0){
           
-              ]}])
-        }else{
-          $(".chart3").hide();
-          console.log("hello" + badmood)
-          $('.chart6').segbar([{
-            width: "100%",
-            height: "50px",
-            data: [
-              { title: 'good  mood', value: parseInt(goomood) ,border:'1px solid #000000',color:'#ffffff'},
-            {  title: 'bad gelaunt', value: parseInt(badmood) ,color: '#81CFE0',border:'1px solid #000000',color:'#E34F32'},
-              
         
-            ]}])
+          var f2 = $(".f2").width(( width2)+28) / $('.f2').parent().width() * 100;
+        var g2= $(".g2").width(0);
+        $('.f2').html( width2 + "%");
+        }else{
+         
+             var g2 = $(".g2").width(Math.abs(width2)+28) / $('.g2').parent().width() * 100;  
+             var f2 = $(".f2").width(0);
+             
+             $('.g2').html( width2 + "%");
         }
-   
       },
-   
-  
-      
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
           console.log("not fetching data");
           console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
@@ -264,43 +228,85 @@ function formatDate(date) {
    
   });
   }  
-
-  
-var awapikey='cb1d8448-4583-4b39-9e5b-65cb7b5bf73d';
-function beforeLogin(typeText)
+  console.log(profiledetails);
+var awapikey='8aec0765-bb8a-4d5c-baa4-bf7ed6f86f89';
+var chart1='';
+function beforeLogin()
 {
+  var commentText=$('#comment').val();
   $.ajax({
     url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
    method: "post",
    data: JSON.stringify(
     {
         
-            "text": typeText,
+            "text": commentText,
             "lang": "en",
-            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
+            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b",
+            // "932e6447-8d03-4e05-a712-d37eda447a0b"
             // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
           
     }
   ),
   headers: {
+    'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
     'x-api-key' : awapikey,
    },
    success:function(response){
     
        var cat= response.scores;
-      console.log(cat);
+      //  console.log("scores")
+      // console.log(cat);
+      var sidebarNotes=response.sidebarNotes;
+      console.log(sidebarNotes);
+      // var highlightText=sidebarNotes.map(c=>{return c.text});
+      var highlightWords=sidebarNotes.map(c=>{return c.addwords});
+
+
+      var html = "";
+$.each(sidebarNotes ,function (index, item) {
+    console.log(item.title);
+    var dataTitle=JSON.stringify(item.title)
+    var dataContent=JSON.stringify(item.content)
+    
+   if(item.addwords==undefined)
+   {
+    html += "<li class='highightli'  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'></button>";
+   }
+   else
+   {
+    html += "<li class='highightli'  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'><i class='fa fa-plus' id='appl'></i></button>";
+   }
+    
+    if((item.addwords)==undefined){
+      $("#appl").css("display","none")
+      console.log("success");
+     }
+     else{
+      $("#appl").show();
+      console.log("fail");
+     } 
+    html += "</li>";
+    
+      html +="<hr>";
+});
+var overallscorce=parseInt((response.scores.overall)*100);
+
+$(".overall").html("Over All Scorce"+ "" +":"+overallscorce +"%")
+$("#uldisplay").append(html);
+      
       var scores=[
-        cat[ "overall"],
-        cat[ "orientation"],
-        cat[ "authenticity"],
         cat[ "jointPosAchieve"],
+        cat[ "analytics"],
+        cat[ "orientation"],
+        cat[ "emotionality"],
         
         
-        cat[ "jointPosAffil"],
+        cat[ "authenticity"],
         
         cat[ "jointPosPower"],
-        cat[ "emotionality"]
+        cat[ "jointPosAffil"]
       ];
        console.log(awapikey);
       console.log("success");
@@ -308,87 +314,88 @@ function beforeLogin(typeText)
         datasets: [{
             data: scores,
             backgroundColor: [
-                "#FF6384",
-                "#4BC0C0",
-                "#FFCE56",
-                "#E7E9ED",
-                "#36A2EB"
+                "#FEF075",
+                "#FFEDDA",
+                "#B7FFEE",
+                "#F9B09F",
+                "#FDCE82",
+                "#4EC3F7",
+                "#AED580"
             ],
            // label: 'My dataset' // for legend
         }],
-        labels: [
-          "overall",
-          "orientation",
-          "emotionality",
-          "authenticity",
-          "Power",
-          "jointPosAchieve",
-          "jointPosPower"
-        ]
+      
     };
     console.log(data);
-    var ctx = $("#myChart");
-new Chart(ctx, {
-    data: data,
-    type: 'polarArea'
-});
-
-   },
-   
-    error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        console.log("not fetching data");
-        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-    } ,
- 
-});
-}
-function genderGraph(typeText)
-{
-  $.ajax({
-    url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
-   method: "post",
-   data: JSON.stringify(
+    if(chart1)
     {
-        
-            "text": typeText,
-            "lang": "en",
-            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
-            // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
-          
+      chart1.destroy();
     }
-  ),
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key' : awapikey,
-   },
-   success:function(response){
-    var genderBalance=response.scores.genderBalance;
-
-    if (genderBalance > 1){
-      $(".chart8").hide();
-      console.log( "user_text" + genderBalance);
-        $('.chart7').segbar([{
-          width: "100%",
-          height: "50px",
-          data: [
-            { title: 'Male', value: parseInt(genderBalance) ,color:'#C892D3'},
-            {  title: 'Female', value: parseInt(genderBalance) ,color: '#81CFE0',color:'#ffffff'},
+    // this is my <canvas> element
+    
+    var ctx = document.getElementById("myChart").getContext('2d');
+    
+  chart1=new Chart(ctx, {
+  centerText:{
+    display:true,
+    text:280
+  },
+    options: {
+      cutoutPercentage: 20,
+      onClick:function(event,item)
+      {
+         console.log("bar chart clicked"+event+item);
+      },
+      scale:{
+       ticks:{
+         beginAtZero:true,
+         max:1,
+         stepSize:1,
+         callback: function(value){return value+ "%"}
+       }
+                      },
       
-          ]}])
-    }else{
-      $(".chart7").hide();
-      $('.chart8').segbar([{
-        width: "100%",
-        height: "50px",
-        data: [
-          { title: 'Male', value: parseInt(genderBalance) ,border:'1px solid #000000',color:'#ffffff'},
-        {  title: 'Female', value: parseInt(genderBalance) ,color: '#81CFE0',border:'1px solid #000000',color:'#C892D3'},
-          
-    
-        ]}])
-    }
-    
+      plugins: {
+        
+      labels: {
 
+        arc: true,
+        render: 'label',
+        fontColor: '#000',
+        position: 'outside'
+      }
+    },
+      legend: {
+      display: false
+      
+    },
+  },
+    data: data,
+    type: 'polarArea',
+    label:'percentage',
+    
+    
+});
+Chart.pluginService.register({
+  beforeDraw: function(chart) {
+    var width = chart.chart.width,
+        height = chart.chart.height,
+        ctx = chart.chart.ctx;
+
+    ctx.restore();
+    var fontSize = (height / 114).toFixed(2);
+    ctx.font = fontSize + "em sans-serif";
+    ctx.textBaseline = "middle";
+
+    var text = "75%",
+        textX = Math.round((width - ctx.measureText(text).width) / 2),
+        textY = height / 2;
+
+    ctx.fillText(text, textX, textY);
+    ctx.save();
+  }
+});
+localStorage.clear();
    },
    
     error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -398,13 +405,232 @@ function genderGraph(typeText)
  
 });
 }
-
-function showAnalysis()
+$("#menu").hide();
+function publicComment()
 {
-$('#analysis').show();
+  var client = ZAFClient.init();
+  client.get('comment.text').then(function(data){
+    var comments=(data['comment.text']);
+    console.log(comments);
+    var cleanText = comments.replace(/(<([^>]+)>)/ig,"");
+    //var wordcount = comments.replace(regex, ' ').split(' ').length;
+   $('#comment').val(cleanText);
+  
+
+  
+    $("#menu").show();
+  });
+}
+$("#loginform").submit(function(event) {
+
+  event.preventDefault();
+
+  var $form = $(this),
+    url = $form.attr('action');
+
+  var posting = $.post(url, {
+    name: $('#name').val(),
+    name2: $('#name2').val()
+  });
+  $('#apiarea').show();
+
+  posting.done(function(data) {
+    $('#apiarea').show();
+  });
+});
+function showApiArea()
+{
+  console.log("ShowArea called");
+  $('#apiarea').show();
+}
+function on(d) {
+  var titlesides=d.getAttribute("data-titles");
+  var contentside=d.getAttribute("data-content");
+  $("#Contentsidenote").text(contentside);
+  
+  $("#Titlesidenote").html(titlesides);
+  var addWords=d.getAttribute("data-adwords").split(",");
+  
+
+
+   $('#text').text(addWords);
+      
+      $('#text').each(function(){
+     
+        var txt = $(this).text();
+       
+        $(this).html('<ul id="Submenu"><li>' + txt.replace(/,/g,'</li><li>') + '</li></ul>');
+    });
+
+  document.getElementById("overlay").style.display = "block";
 
 }
 
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
 
+function genderGraph1(cleantypeText,profiledetails)
+{
+//   $.ajax({
+//     url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
+//    method: "post",
+//    data: JSON.stringify(
+//     {
+        
+//             "text": cleantypeText,
+//             "lang": "en",
+//             "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
+//             // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
+          
+//     }
+//   ),
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'x-api-key' : awapikey,
+//    },
+//    success:function(response){
+//     var genderBalance=response.scores.genderBalance;
+// var genderper=((genderBalance)*100);
+// console.log(genderBalance);
+//       if (genderBalance > 0 && genderBalance < 0.5){
+          
+        
+//         var f3 = $(".f3").width((parseInt(genderper))) / $('.f3').parent().width() * 128;
+//       var g3= $(".g3").width(0);
+//       console.log("i am male");
+//       console.log(genderper);
+//       }else if (genderBalance > 0.5){
+       
+//            var g3 = $(".g3").width(Math.abs(parseInt(genderper))) / $('.g3').parent().width() * 128;  
 
+//            var f3 = $(".f3").width(0);
+//            console.log("i am female");
+//            console.log(genderBalance);
+//       }
+//       else{
+//         var g3= $(".g3").width(0); 
+//         var f3 = $(".f3").width(0);
+//       }
+//    },
+   
+//     error: function(XMLHttpRequest, textStatus, errorThrown) { 
+//         console.log("not fetching data");
+//         console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+//     } ,
+ 
+// });
+// profiledetails= {
+//   "stds": {
+//     "jointPosAchieve": 0,
+//     "jointPosAffil": 0,
+//     "jointPosPower": 0,
+//     "analytics": 0,
+//     "authenticity": 0,
+//     "emotionality": 0,
+//     "orientation": 0
+//   },
+//   "means": {
+//     "jointPosAchieve": 0,
+//     "jointPosAffil": 0,
+//     "jointPosPower": 0,
+//     "analytics": 0,
+//     "authenticity": 0,
+//     "emotionality": 0,
+//     "orientation": 0
+//   }
+// };
 
+$.ajax({
+  url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses_temp_profile",
+ method: "post",
+ data: JSON.stringify(
+  {
+      
+          "text": cleantypeText,
+          "lang": "en",
+          "customer-profile":profiledetails ,
+          
+          // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
+        
+  }
+),
+headers: {
+  'Access-Control-Allow-Origin': '*',
+  'Content-Type': 'application/json',
+  'x-api-key' : awapikey,
+ },
+ success:function(response){
+  var genderBalance=response.scores.genderBalance;
+var genderper=((genderBalance)*100);
+console.log(genderBalance);
+    if (genderBalance > 0 && genderBalance < 0.5){
+        
+      
+      var f3 = $(".f3").width((parseInt(genderper))) / $('.f3').parent().width() * 128;
+    var g3= $(".g3").width(0);
+    console.log("i am male");
+    console.log(genderper);
+    }else if (genderBalance > 0.5){
+     
+         var g3 = $(".g3").width(Math.abs(parseInt(genderper))) / $('.g3').parent().width() * 128;  
+
+         var f3 = $(".f3").width(0);
+         console.log("i am female");
+         console.log(genderBalance);
+    }
+    else{
+      var g3= $(".g3").width(0); 
+      var f3 = $(".f3").width(0);
+    }
+ },
+ 
+  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+      console.log("not fetching data");
+      console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+  } ,
+
+});
+}
+function newgraph(user_text)
+  {
+    $.ajax({
+      url: "https://dev.100worte.de/v1/api/customer_intelligence/analyse",
+     method: "put",
+     data: JSON.stringify(
+      {
+        "text":user_text,
+        
+      }
+    ),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key' : apikey,
+     },
+     success:function(response){
+       
+       var orientation=response.skills.orientation;
+      var width1=(Math.abs(parseInt(orientation)))
+   
+         if (orientation > 0){
+          
+        
+          var f1 =$(".f1").width((width1)+28) / $('.f1').parent().width() * 100;
+         
+        var g1= $(".g1").width(0);
+        $(".f1").text(width1 +"%")
+        }else{
+         
+             var g1 = $(".g1").width(Math.abs(width1)+28) / $('.g1').parent().width() * 100;  
+
+             var f1 = $(".f1").width(0);
+             $(".g1").text(width1 +"%")
+        }
+        },
+      error: function(XMLHttpRequest, textStatus, errorThrown) { 
+          console.log("not fetching data");
+          console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+      } ,
+   
+  });
+  }

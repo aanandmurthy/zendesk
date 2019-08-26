@@ -7,6 +7,7 @@
   },
   "defaultLocale": "en",
   "private": true,
+  
   "location": {
     "support": {
       "ticket_sidebar": "assets/iframe.html"

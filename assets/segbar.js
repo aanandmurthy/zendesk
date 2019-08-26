@@ -58,13 +58,16 @@
             div.style.display = "inline-block";
             div.style.height = "100%";
             div.style.width = `50%`;
+            
+            //div.style.width = '${parseFloat(item.percent*100)}%';
             //${parseFloat(item.percent*100)}%
-                div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value(parseFloat(item.percent*100))
+            div.style.backgroundColor=  (item.color) ? item.color :parseFloat(item.percent / 100);
+            // div.style.backgroundColor = (item.color) ? item.color : colorIt.next().value(parseFloat(item.percent*100))
             div.style.position = "relative";
             div.style.border = "1px solid #000000";
-
+           
             div.classList.add('item-wrapper');
-
+          
            // Percentage span
             let span = document.createElement('span');
             span.textContent = `${prettifyPercentage(item.percent*100)} %`;

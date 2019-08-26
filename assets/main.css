@@ -67,3 +67,170 @@ table #bargraph{
 .item-wrapper{
   border:1px solid black;
 }
+#fix-width{
+  width:250px!important;
+  padding: 0px!important;
+  margin: 0px!important;
+  border:none;
+}
+.marginpaddingZero{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.widthbutton{
+  width: 50%;
+  padding: 0px;
+  margin-right: 5px;
+  margin-left: -12px;
+}
+.widthbutton1{
+  width: 50%;
+  padding: 0px;
+  margin-left: 8px;
+}
+
+.card-header .accordion-toggle:after {
+ 
+  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f078";
+  float:right;
+  color: #000000;
+  margin-left: 40px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: right;
+  transition: transform .25s linear;
+  -webkit-transition: -webkit-transform .25s linear;
+}
+.card-header .accordion-toggle.collapsed:after {
+
+  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f106";   
+  float:right;
+  color: #000000;
+  margin-left: 40px; 
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: right;
+  transition: transform .25s linear;
+  -webkit-transition: -webkit-transform .25s linear;
+}
+
+.cssClass{
+  text-decoration: none;
+  color: #000000;
+}
+.cssClass:hover{
+  text-decoration: none;
+  color: #000000;
+}
+
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff; /* Black background with opacity */
+  z-index: 2;
+  cursor: pointer;
+   overflow-y: scroll; 
+  top:0%;
+}
+#Submenu{
+  position: relative;
+  left: 50%;
+  font-size: 17px;
+  font-family:inherit; 
+  color:#000;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  overflow-y: scroll;
+  top:1245px;
+}
+.highightli{
+  list-style: none!important;
+}
+#uldisplay{
+  height: 200px; 
+  overflow: auto;
+  border:1px solid #000000;
+}
+#closebutton{
+  position: absolute;
+  top: 1%;
+  right: 3px;
+}
+/*end overlay css*/
+/*bar graph css*/
+.f,.f1,.f2,.f3{
+  position: absolute;;
+    margin:0;
+    right:0;
+    background-position: right ;
+    height: 97%;
+    text-align: left!important;
+}
+.f
+{
+    background-color:#FFEDDA;
+}
+.f1
+{
+    background-color:#B7FFEE;
+}
+.f2
+{
+    background-color:#AED580;
+}
+.f3
+{  
+    background-color:#AED580;
+}
+.g,.g1,.g2,.g3{
+  position:relative;
+    margin:0;
+    height: 96%;
+}
+.g
+{
+    background-color:#FECE82;
+  
+}
+.g1
+{
+    /* width:128px; */
+    background-color:#B7FFEE;
+}
+.g2
+{
+    /* width:128px; */
+    background-color:#ED8871;
+    position:relative;
+    margin:0;
+    height: 96%;
+}
+.g3
+{
+    /* width:60%; */
+    background-color:#AED580;
+}
+/*endbar graph css*/
+.heading1{
+  border:1px solid #78A30C;
+  background-color: #fff;
+}
+.heading2{
+  border:1px solid #2F88D1;
+  background-color: #fff;
+}
+.blink{
+  animation: blink 1s linear infinite;
+  color:red;
+}
+@keyframes blink{
+  0%{opacity: 0;}
+  50%{opacity: .5;}
+  100%{opacity: 1;}
+  }
