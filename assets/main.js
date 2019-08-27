@@ -1,6 +1,8 @@
 //main function of all
 var user_text;
 var profiledetails;
+var key;
+var dataTitle;
 $(function () {
   var client = ZAFClient.init();
   $("#apiarea").hide();
@@ -29,7 +31,6 @@ $(function () {
   client.get('ticket.description').then(function(data) {
    
      user_text=data['ticket.description'];
-    console.log(user_text);
     afterLogin(user_text);
     // thinking(user_text);
     mood(user_text);
@@ -47,9 +48,6 @@ $(function () {
     }else{
       $('#wordCount').hide();
     }
-    
- 
-    console.log(wordcount);
     $('#comment').text(cleantypeText);
     beforeLogin(cleantypeText);
     //genderGraph(typetext);
@@ -57,11 +55,6 @@ $(function () {
   })
 
 });
-var client = ZAFClient.init();
-client.get('ticket.requester.name').then(function(data) {
-  console.log(data); // { "ticket.requester.name": "Mikkel Svane" }
-});
-
 function validateAccessKey()
 {
   var apiaccesKey=$("input[name='Api-key']").val();
@@ -80,7 +73,11 @@ function validateAccessKey()
     $("#login").hide();
   }
 }
+//Global Variables
+var sideNotes='';
+//End Global variables
 //call the data of user
+
 function requestUserInfo(client, id ) {
   var settings = {
     url: '/api/v2/users/' + id + '.json',
@@ -154,19 +151,11 @@ function formatDate(date) {
       'x-api-key' : apikey,
      },
      success:function(response){
-       debugger;
-       console.log("Analyticalresponse");
-       console.log(response);
          var useerdetail= response.skills.analytics;
          var widthvalue=Math.abs(parseInt(useerdetail));
          if (useerdetail > 0){
-          
-   
-        console.log(widthvalue);
            var f = $(".f").width(widthvalue +28) / $('.fparent').width() * 100;
-          
           $('.f').html( widthvalue + "%");
-          console.log();
         var g= $(".g").width(0);
         }else{
          
@@ -204,7 +193,7 @@ function formatDate(date) {
             
        profiledetails=response.profile;
         genderGraph1(user_text,profiledetails);
-        beforeLogin(user_text,profiledetails);
+        beforeLvogin(user_text,profiledetails);
          var emtionaitly=response.skills.emotionality;
          var width2=Math.abs(parseInt(emtionaitly));
          if (emtionaitly > 0){
@@ -231,18 +220,18 @@ function formatDate(date) {
   console.log(profiledetails);
 var awapikey='8aec0765-bb8a-4d5c-baa4-bf7ed6f86f89';
 var chart1='';
-function beforeLogin()
+function beforeLogin(text,profiledetails)
 {
   var commentText=$('#comment').val();
   $.ajax({
-    url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
+    url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses_temp_profile",
    method: "post",
    data: JSON.stringify(
     {
         
             "text": commentText,
             "lang": "en",
-            "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b",
+            "customer-profile": profiledetails,
             // "932e6447-8d03-4e05-a712-d37eda447a0b"
             // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
           
@@ -254,48 +243,41 @@ function beforeLogin()
     'x-api-key' : awapikey,
    },
    success:function(response){
-    
+     sideNotes=response;
        var cat= response.scores;
-      //  console.log("scores")
-      // console.log(cat);
       var sidebarNotes=response.sidebarNotes;
-      console.log(sidebarNotes);
-      // var highlightText=sidebarNotes.map(c=>{return c.text});
       var highlightWords=sidebarNotes.map(c=>{return c.addwords});
-
-
+       var key=response.sidebarNotes.map(c=>{return c.key})
       var html = "";
 $.each(sidebarNotes ,function (index, item) {
-    console.log(item.title);
-    var dataTitle=JSON.stringify(item.title)
+  var dataTitle=JSON.stringify(item.title)
     var dataContent=JSON.stringify(item.content)
-    
+      var key=response.sidebarNotes.map(c=>{return c.key})
    if(item.addwords==undefined)
    {
-    html += "<li class='highightli'  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'></button>";
+    html += "<li class='highightli' id="+item.key+" data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'></button>";
    }
    else
    {
-    html += "<li class='highightli'  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'><i class='fa fa-plus' id='appl'></i></button>";
+    html += "<li class='highightli' id="+item.key+"  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'><i class='fa fa-plus' id='appl'></i></button>";
    }
     
     if((item.addwords)==undefined){
       $("#appl").css("display","none")
-      console.log("success");
      }
      else{
       $("#appl").show();
-      console.log("fail");
      } 
     html += "</li>";
     
       html +="<hr>";
 });
+console.log(key);
 var overallscorce=parseInt((response.scores.overall)*100);
 
 $(".overall").html("Over All Scorce"+ "" +":"+overallscorce +"%")
 $("#uldisplay").append(html);
-      
+
       var scores=[
         cat[ "jointPosAchieve"],
         cat[ "analytics"],
@@ -308,8 +290,6 @@ $("#uldisplay").append(html);
         cat[ "jointPosPower"],
         cat[ "jointPosAffil"]
       ];
-       console.log(awapikey);
-      console.log("success");
       var data = {
         datasets: [{
             data: scores,
@@ -326,7 +306,6 @@ $("#uldisplay").append(html);
         }],
       
     };
-    console.log(data);
     if(chart1)
     {
       chart1.destroy();
@@ -334,7 +313,7 @@ $("#uldisplay").append(html);
     // this is my <canvas> element
     
     var ctx = document.getElementById("myChart").getContext('2d');
-    
+
   chart1=new Chart(ctx, {
   centerText:{
     display:true,
@@ -344,7 +323,26 @@ $("#uldisplay").append(html);
       cutoutPercentage: 20,
       onClick:function(event,item)
       {
-         console.log("bar chart clicked"+event+item);
+        var takeKeyValue=item[0]._index;
+        var keyData=(takeKeyValue==0)?"jointPosAchieve":
+                    (takeKeyValue==1)?"analytics":
+                    (takeKeyValue==2)?"orientation":
+                    (takeKeyValue==3)?"emotionality":
+                    (takeKeyValue==4)?"authenticity":
+                    (takeKeyValue==5)?"jointPosPower":
+                    (takeKeyValue==6)?"jointPosAffil":"";
+        console.log(takeKeyValue);
+        console.log(keyData);
+        console.log(JSON.stringify(sideNotes));
+        //  console.log("bar chart clicked"+event+item);
+      if (key ) {
+          
+       on(document.getElementById(keyData));
+             
+      }
+      else{
+        console.log("not successful");
+      }
       },
       scale:{
        ticks:{
@@ -387,7 +385,7 @@ Chart.pluginService.register({
     ctx.font = fontSize + "em sans-serif";
     ctx.textBaseline = "middle";
 
-    var text = "75%",
+    var text = "55%",
         textX = Math.round((width - ctx.measureText(text).width) / 2),
         textY = height / 2;
 
@@ -396,6 +394,7 @@ Chart.pluginService.register({
   }
 });
 localStorage.clear();
+
    },
    
     error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -411,10 +410,11 @@ function publicComment()
   var client = ZAFClient.init();
   client.get('comment.text').then(function(data){
     var comments=(data['comment.text']);
-    console.log(comments);
     var cleanText = comments.replace(/(<([^>]+)>)/ig,"");
     //var wordcount = comments.replace(regex, ' ').split(' ').length;
    $('#comment').val(cleanText);
+   
+
   
 
   
@@ -440,7 +440,6 @@ $("#loginform").submit(function(event) {
 });
 function showApiArea()
 {
-  console.log("ShowArea called");
   $('#apiarea').show();
 }
 function on(d) {
@@ -472,75 +471,6 @@ function off() {
 
 function genderGraph1(cleantypeText,profiledetails)
 {
-//   $.ajax({
-//     url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses",
-//    method: "post",
-//    data: JSON.stringify(
-//     {
-        
-//             "text": cleantypeText,
-//             "lang": "en",
-//             "customer-profile-id": "932e6447-8d03-4e05-a712-d37eda447a0b"
-//             // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
-          
-//     }
-//   ),
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'x-api-key' : awapikey,
-//    },
-//    success:function(response){
-//     var genderBalance=response.scores.genderBalance;
-// var genderper=((genderBalance)*100);
-// console.log(genderBalance);
-//       if (genderBalance > 0 && genderBalance < 0.5){
-          
-        
-//         var f3 = $(".f3").width((parseInt(genderper))) / $('.f3').parent().width() * 128;
-//       var g3= $(".g3").width(0);
-//       console.log("i am male");
-//       console.log(genderper);
-//       }else if (genderBalance > 0.5){
-       
-//            var g3 = $(".g3").width(Math.abs(parseInt(genderper))) / $('.g3').parent().width() * 128;  
-
-//            var f3 = $(".f3").width(0);
-//            console.log("i am female");
-//            console.log(genderBalance);
-//       }
-//       else{
-//         var g3= $(".g3").width(0); 
-//         var f3 = $(".f3").width(0);
-//       }
-//    },
-   
-//     error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//         console.log("not fetching data");
-//         console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
-//     } ,
- 
-// });
-// profiledetails= {
-//   "stds": {
-//     "jointPosAchieve": 0,
-//     "jointPosAffil": 0,
-//     "jointPosPower": 0,
-//     "analytics": 0,
-//     "authenticity": 0,
-//     "emotionality": 0,
-//     "orientation": 0
-//   },
-//   "means": {
-//     "jointPosAchieve": 0,
-//     "jointPosAffil": 0,
-//     "jointPosPower": 0,
-//     "analytics": 0,
-//     "authenticity": 0,
-//     "emotionality": 0,
-//     "orientation": 0
-//   }
-// };
-
 $.ajax({
   url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses_temp_profile",
  method: "post",
@@ -549,10 +479,7 @@ $.ajax({
       
           "text": cleantypeText,
           "lang": "en",
-          "customer-profile":profiledetails ,
-          
-          // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
-        
+          "customer-profile":profiledetails ,        
   }
 ),
 headers: {
@@ -563,21 +490,12 @@ headers: {
  success:function(response){
   var genderBalance=response.scores.genderBalance;
 var genderper=((genderBalance)*100);
-console.log(genderBalance);
     if (genderBalance > 0 && genderBalance < 0.5){
-        
-      
       var f3 = $(".f3").width((parseInt(genderper))) / $('.f3').parent().width() * 128;
     var g3= $(".g3").width(0);
-    console.log("i am male");
-    console.log(genderper);
     }else if (genderBalance > 0.5){
-     
          var g3 = $(".g3").width(Math.abs(parseInt(genderper))) / $('.g3').parent().width() * 128;  
-
          var f3 = $(".f3").width(0);
-         console.log("i am female");
-         console.log(genderBalance);
     }
     else{
       var g3= $(".g3").width(0); 
