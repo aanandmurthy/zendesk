@@ -193,7 +193,7 @@ function formatDate(date) {
             
        profiledetails=response.profile;
         genderGraph1(user_text,profiledetails);
-        beforeLvogin(user_text,profiledetails);
+        beforeLogin(user_text,profiledetails);
          var emtionaitly=response.skills.emotionality;
          var width2=Math.abs(parseInt(emtionaitly));
          if (emtionaitly > 0){
@@ -220,7 +220,7 @@ function formatDate(date) {
   console.log(profiledetails);
 var awapikey='8aec0765-bb8a-4d5c-baa4-bf7ed6f86f89';
 var chart1='';
-function beforeLogin(text,profiledetails)
+function beforeLogin(text)
 {
   var commentText=$('#comment').val();
   $.ajax({
@@ -231,7 +231,7 @@ function beforeLogin(text,profiledetails)
         
             "text": commentText,
             "lang": "en",
-            "customer-profile": profiledetails,
+            "customer-profile": profiledetails
             // "932e6447-8d03-4e05-a712-d37eda447a0b"
             // fa6eff15-3f3e-4a2c-90e1-b6b99fb98e68
           
@@ -413,6 +413,7 @@ function publicComment()
     var cleanText = comments.replace(/(<([^>]+)>)/ig,"");
     //var wordcount = comments.replace(regex, ' ').split(' ').length;
    $('#comment').val(cleanText);
+   beforeLogin(cleanText);
    
 
   
