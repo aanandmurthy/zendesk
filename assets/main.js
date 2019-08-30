@@ -133,7 +133,7 @@ function formatDate(date) {
   return date;
 }
 
-  var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
+  var apikey='b95d349b-e97c-4a32-acf5-4b42dce99b74'
   function afterLogin(user_text)
   {
     $.ajax({
@@ -172,7 +172,7 @@ function formatDate(date) {
    
   });
   }
-  var apikey='bc1ef63c-0c08-464e-a44c-ef6c66fa6859'
+  var apikey='b95d349b-e97c-4a32-acf5-4b42dce99b74'
  
   function mood(user_text)
   {
@@ -217,12 +217,12 @@ function formatDate(date) {
    
   });
   }  
-  console.log(profiledetails);
 var awapikey='8aec0765-bb8a-4d5c-baa4-bf7ed6f86f89';
 var chart1='';
 function beforeLogin(text)
 {
   var commentText=$('#comment').val();
+  console.log(commentText);
   $.ajax({
     url: "https://dev.100worte.de/v1/api/augmented_writing_customer/analyses_temp_profile",
    method: "post",
@@ -253,11 +253,15 @@ $.each(sidebarNotes ,function (index, item) {
   var dataTitle=JSON.stringify(item.title)
     var dataContent=JSON.stringify(item.content)
       var key=response.sidebarNotes.map(c=>{return c.key})
-   if(item.addwords==undefined)
+   if(item.title== undefined || item.content==undefined   &&  item.addwords==undefined  ) 
    {
-    html += "<li class='highightli' id="+item.key+" data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'></button>";
+    console.log(dataTitle);
+    html += "<li class='highightli' id="+item.key+" data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+" >" + item.text ;
+   }else if(item.addwords==undefined ) {
+     console.log(dataTitle);
+    html += "<li class='highightli' id="+item.key+" data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+" onclick='on(this)' >" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'></button>";
    }
-   else
+   else 
    {
     html += "<li class='highightli' id="+item.key+"  data-titles="+dataTitle+" data-content="+dataContent+" data-adWords="+String(item.addwords)+"  onclick='on(this)'>" + item.text +"<button type='button'  class='btn btn-secondary buttonappear' data-toggle='tooltip' data-placement='bottom' title='Tooltip on top' style='background-color:#fff;color:#000;border-color:#fff'><i class='fa fa-plus' id='appl'></i></button>";
    }
@@ -272,8 +276,7 @@ $.each(sidebarNotes ,function (index, item) {
     
       html +="<hr>";
 });
-console.log(key);
-var overallscorce=parseInt((response.scores.overall)*100);
+
 
 $(".overall").html("Over All Scorce"+ "" +":"+overallscorce +"%")
 $("#uldisplay").append(html);
@@ -312,7 +315,7 @@ $("#uldisplay").append(html);
     }
     // this is my <canvas> element
     
-    var ctx = document.getElementById("myChart").getContext('2d');
+    var ctx = document.getElementById("c2").getContext('2d');
 
   chart1=new Chart(ctx, {
   centerText:{
@@ -331,9 +334,9 @@ $("#uldisplay").append(html);
                     (takeKeyValue==4)?"authenticity":
                     (takeKeyValue==5)?"jointPosPower":
                     (takeKeyValue==6)?"jointPosAffil":"";
-        console.log(takeKeyValue);
-        console.log(keyData);
-        console.log(JSON.stringify(sideNotes));
+        // console.log(takeKeyValue);
+        // console.log(keyData);
+        // console.log(JSON.stringify(sideNotes));
         //  console.log("bar chart clicked"+event+item);
       if (key ) {
           
@@ -347,8 +350,9 @@ $("#uldisplay").append(html);
       scale:{
        ticks:{
          beginAtZero:true,
+         min:0,
          max:1,
-         stepSize:1,
+         stepSize:2,
          callback: function(value){return value+ "%"}
        }
                       },
@@ -381,19 +385,111 @@ Chart.pluginService.register({
         ctx = chart.chart.ctx;
 
     ctx.restore();
-    var fontSize = (height / 114).toFixed(2);
+    var fontSize = (height / 114).toFixed(1.5);
     ctx.font = fontSize + "em sans-serif";
     ctx.textBaseline = "middle";
 
-    var text = "55%",
-        textX = Math.round((width - ctx.measureText(text).width) / 2),
-        textY = height / 2;
+    var text = "",
+        textX = Math.round((width - ctx.measureText(text).width) / 1.5),
+        textY = height / 1.5;
 
     ctx.fillText(text, textX, textY);
     ctx.save();
   }
 });
 localStorage.clear();
+var overallscorce=parseInt((response.scores.overall)*100);
+var scores=[
+  cat[ parseInt("jointPosAchieve")],
+  cat[ "analytics"],
+  cat[ "orientation"],
+  cat[ "emotionality"],
+  
+  
+  cat[ "authenticity"],
+  
+  cat[ "jointPosPower"],
+  cat[ "jointPosAffil"]
+];
+var data = [{"label":"Achievement <br> Speech","colour":"#FEF075","score":parseInt(cat[("jointPosAchieve")]*100)},
+            {"label":"Analytic Speechs","colour":"#FFEDDA","score": parseInt(cat[ "analytics"]*100) },
+            {"label":"Reward Focus","colour":"#B7FFEE","score":parseInt(cat[ "orientation"]*100)},
+            {"label":"Positvie Mood","colour":"#F9B09F","score":parseInt(cat[ "emotionality"]*100)},
+            {"label":"Authentic Speech","colour":"#FDCE82","score":parseInt(cat[ "authenticity"]*100)},
+            {"label":"Power Speech","colour":"#4EC3F7","score": parseInt(cat[ "jointPosPower"]*100)},
+            {"label":"Affiliation Speech","colour":"#AED580","score":parseInt(cat[ "jointPosAffil"]*100)}];
+var chart2 = new G2.Chart({
+  id: 'myChart',
+  forceFit: false,
+  width:400,
+   height: 450
+});
+chart2.source(data);
+chart2.coord('polar', {
+  inner: 0.2
+});
+chart2.position
+chart2.legend(false);
+chart2.axis('score', false);
+chart2.axis('labels',{
+  autoRotate: true
+});
+// chart2.axis('label', {
+//   // textStyle: {
+//   //   textAlign: 'start', // 文本的颜色
+//   //   fontSize: '15', // 文本大小
+//   //   fontWeight: 'bold', 
+//   // offset: 100,
+//   // startArrow: true,
+//   // rotate:30 * Math.PI / 180
+//   // },
+//   label:null,
+// });
+chart2.axis('label', {
+  labels: null
+});
+chart2.interval().position('label*score').color('colour', function(val) {
+  return val;
+}).style({
+  stroke: '#999',
+  lineWidth: 0
+}).tooltip('score');
+chart2.guide().text([5, 0], overallscorce + '%', {
+  fill: '#666', // 文本颜色
+  fontSize: '15', // 文本大小
+  fontWeight: 'bold' // 文本粗细
+});
+chart2.render({startArrow: true});
+chart2.on('plotclick',function(ev){
+  var data = ev.data;
+  if (data) {
+
+    var name = data._origin['label'];
+    var takeKeyValue=data.index;
+    var keyData=(takeKeyValue==0)?"jointPosAchieve":
+                (takeKeyValue==1)?"analytics":
+                (takeKeyValue==2)?"orientation":
+                (takeKeyValue==3)?"emotionality":
+                (takeKeyValue==4)?"authenticity":
+                (takeKeyValue==5)?"jointPosPower":
+                (takeKeyValue==6)?"jointPosAffil":"";
+    // console.log(takeKeyValue);
+    // console.log(keyData);
+    // console.log(JSON.stringify(sideNotes));
+    //  console.log("bar chart clicked"+event+item);
+  if (key ) {
+      
+   on(document.getElementById(keyData));
+         
+  }
+  else{
+    console.log("not successful");
+  }
+    
+  }
+});
+
+  
 
    },
    
@@ -411,7 +507,14 @@ function publicComment()
   client.get('comment.text').then(function(data){
     var comments=(data['comment.text']);
     var cleanText = comments.replace(/(<([^>]+)>)/ig,"");
-    //var wordcount = comments.replace(regex, ' ').split(' ').length;
+    var wordcount =cleanText.trim().split(' ');
+    $('#wordCount').hide();
+    if(wordcount.length < 50 ){
+      $('#wordCount').show();
+       $('#wordcount').html("In order to obtain a reliable result, the individual text samples should contain at least 50 words!");
+    }else{
+      $('#wordCount').hide();
+    }
    $('#comment').val(cleanText);
    beforeLogin(cleanText);
    

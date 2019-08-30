@@ -5,8 +5,9 @@
       'app.activated':'doSomething'
     },
 
-    doSomething: function() {
+    doSomething: function() 
     }
   };
 
 }());
+a

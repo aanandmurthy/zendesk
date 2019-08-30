@@ -7,6 +7,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <link href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+  <script src="https://a.alipayobjects.com/jquery/jquery/1.11.1/jquery.js"></script>
+  <script src="https://gw.alipayobjects.com/as/g/datavis/g2/2.3.13/index.js"></script>
   <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2/zaf_sdk.min.js"></script>
   <link href="main.css" rel="stylesheet">
 
@@ -45,7 +47,7 @@
                     <div class="card-body" id="fix-width">
                         <div class="row">
                             <div class="col-sm-12">
-                                <span><a href="analytic.html"><i class="fa fa-sun"></i>Denkstil</a> </span>
+                                <span><a href="pa.html"><i class="fa fa-sun"></i>Denkstil</a> </span>
                               
                             </div>
                                           
@@ -157,29 +159,33 @@
                             <div id="uldisplay"></div>
                         </div>
                         <div class="col-12">
-                          <label style="position: absolute;right: 0px;top:20;background-color:#FEF075;font-size: 12px;">Achievement<br> Speech</label>
+                          <label style="position: absolute;right: 70px;top:49;font-size: 12px;">Achievement<br> Speech</label>
                             
-                          <label style="position: absolute;right: -19px;top:133;background-color:#FBE9D6;font-size: 12px;">Analytic <br>Speech</label>
-                          <label style="position: absolute;right: 0px;top:289;background-color:#B7FFEE;font-size: 12px;">Reward Focus</label>
-                          <label style="position: absolute;left: 86;top:299;background-color:#F9B09F;font-size: 12px;">Positvie Mood</label>
-                          <label style="position: absolute;left: 0px;top:85%;background-color:#FECE82;font-size: 12px;">Authentic <br>Speech</label>
-                          <label style="position: absolute;left: 0px;top: 50%;background-color:#4EC3F7;font-size: 12px;">Power Speech</label>
-                          <label style="position: absolute;left: 22px;top:20;background-color:#AED580;font-size: 12px;">Affiliation Speech</label>
-                        <div id="chart" style="height: 250px;width: 250px; padding-top: 30px" >
+                          <label style="position: absolute;right: -19px;top:133;font-size: 12px;z-index: 1;">Analytic <br>Speech</label>
+                          <label style="position: absolute;right: -17px;top:223;font-size: 12px;z-index: 1;">Reward<br> Focus</label>
+                          <label style="position: absolute;left: 161;top:329;font-size: 12px;">Positvie Mood</label>
+                          <label style="position: absolute;left: 26px;top:71%;font-size: 12px;">Authentic <br>Speech</label>
+                          <label style="position: absolute;left: 0px;top: 50%;font-size: 12px;z-index: 1;">Power <br>Speech</label>
+                          <label style="position: absolute;left: 0;top:99;font-size: 12px;">Affiliation<br> Speech</label>
+                        
+                          <!-- <div id="chart" style="height: 250px;width: 250px; padding-top: 30px" >
                             <canvas id="myChart" width="220" height="250"></canvas>
-                          </div>
+                          </div> -->
+                          <div class="col-md-12" >
+                              <div id="myChart"></div>
+                            </div>
                         </div>
-                          <div class="overall" style="margin-top: 73px;padding: 0px"></div>
+                         
                           <div class="helo1" style="margin: 0px"></div>
                           
-                          <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;margin-top:10px;">
+                          <div class="col-md-12"  style="white-space: nowrap; display:inline-box ;padding:0px;margin:0px;margin-top:-73px;">
                               <div class="col-md-6 border border-secondary" style="white-space: nowrap;padding:0px;margin:0px; display: -webkit-inline-box;height:50px">
                                   <div class="md-3 " style="width:50%;border:1px solid black;position:relative;"><div class="f3" ></div><div style="text-align: left">Male</div></div>
                                     <div class="md-3 " style="width:50%;border:1px solid black"><div class="g3">Female</div></div>
                               </div>  
 
-                             
-                         <div class="form-group" id="refresh"> 
+                           
+                         <div class="form-group" id="refresh" style="display:none" > 
                             <label for="comment">Comment:</label>
                             <div style="height: 200px; width: 267px;">
                                 <div id="c1" style="overflow: auto; max-height: 200px;">
@@ -191,6 +197,9 @@
                           </div> 
                          
                          
+                        </div>
+                        <div class="col-md-12" style="display:none;" >
+                            <canvas id="c2" width="220" height="250"></canvas>
                         </div>
                 </div>
               </div>

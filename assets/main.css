@@ -226,7 +226,7 @@ table #bargraph{
   background-color: #fff;
 }
 .blink{
-  animation: blink 1s linear infinite;
+  /* animation: blink 1s linear infinite; */
   color:red;
 }
 @keyframes blink{
@@ -234,3 +234,13 @@ table #bargraph{
   50%{opacity: .5;}
   100%{opacity: 1;}
   }
+#g-chart1{
+
+  position: absolute;
+  right: 96px;
+}
+/* #g-chart2{
+  position: relative;
+  left: -100px;
+  top: -450px;
+} */
