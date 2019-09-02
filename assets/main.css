@@ -150,12 +150,15 @@ table #bargraph{
   top:1245px;
 }
 .highightli{
-  list-style: none!important;
+  list-style-type: square!important;
+
+
 }
 #uldisplay{
   height: 200px; 
   overflow: auto;
-  border:1px solid #000000;
+  border:1px dotted #000000;
+  
 }
 #closebutton{
   position: absolute;
@@ -234,10 +237,10 @@ table #bargraph{
   50%{opacity: .5;}
   100%{opacity: 1;}
   }
-#g-chart1{
-
-  position: absolute;
-  right: 96px;
+#myChart{
+  right: 78px;
+  position: relative;
+  top: 43px;
 }
 /* #g-chart2{
   position: relative;
