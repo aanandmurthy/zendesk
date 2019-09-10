@@ -10,12 +10,9 @@
   
   "location": {
     "support": {
-      "ticket_sidebar": {
-        "signed": true,
-        "url": "https://myapp.example.org/"
-      }
+      "ticket_sidebar": "assets/iframe.html"
     }
-},
+  },
   "version": "1.0",
   "frameworkVersion": "2.0"
 }
